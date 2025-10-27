@@ -395,8 +395,8 @@
         ];
         
         const MOCK_NPCS = [
-            { id: 'thanhvan', name: "Sư Tỷ Thanh Vân", realm: "Luyện Khí Tầng 3", baseAtk: 50, baseDef: 20, baseHp: 300, isChallengable: false, description: "Bận rộn luyện đan, có thể chỉ điểm công pháp." },
-            { id: 'truonglao', name: "Trưởng Lão Dược Các", realm: "Trúc Cơ Trung Kỳ", baseAtk: 100, baseDef: 50, baseHp: 800, isChallengable: false, description: "Người quản lý vật phẩm hiếm, có thể trao đổi bảo vật." },
+            { id: 'thanhvan', name: "Sư Tỷ Thanh Vân", realm: "Luyện Khí Tầng 3", baseAtk: 50, baseDef: 20, baseHp: 300, isChallengable: false, canInteract: true, description: "Bận rộn luyện đan, có thể chỉ điểm công pháp." },
+            { id: 'truonglao', name: "Trưởng Lão Dược Các", realm: "Trúc Cơ Trung Kỳ", baseAtk: 100, baseDef: 50, baseHp: 800, isChallengable: false, canInteract: true, description: "Người quản lý vật phẩm hiếm, có thể trao đổi bảo vật." },
             { 
                 id: 'thientai', 
                 name: "Thiên Tài Huyền Băng", 
@@ -405,6 +405,7 @@
                 baseDef: 100, 
                 baseHp: 1500, 
                 isChallengable: true, 
+                canInteract: false,
                 reward: 10000, 
                 description: "Tu Giả kiêu ngạo, có thể thách đấu để nhận thưởng lớn.",
                 loot: { 'Thiên Phạt Lệnh': 0.001 } // Tỷ lệ rơi 0.1%
@@ -417,6 +418,7 @@
                 baseDef: 250, 
                 baseHp: 5000, 
                 isChallengable: true, 
+                canInteract: false,
                 reward: 50000, 
                 description: "Cao nhân ẩn dật, có thể thách đấu để nhận thưởng khủng.",
                 loot: { 'Thiên Phạt Lệnh': 0.01 } // Tỷ lệ rơi 1% theo yêu cầu
@@ -501,7 +503,7 @@
             if (message.startsWith("§")) {
                 logMessage = `<p class="text-base my-1 font-bold text-yellow-300">${message.substring(1)}</p>`;
             } else if (message.startsWith("•")) {
-                logMessage = `<p class="text-sm my-1 text-green-400">${message}</p>`;
+                logMessage = `<p class="text-sm my-1 text-green-400">${message.substring(1)}</p>`;
             } else if (message.startsWith("X")) {
                 logMessage = `<p class="text-sm my-1 text-red-500">${message.substring(1)}</p>`;
             } else if (message.startsWith("!")) {
@@ -656,6 +658,12 @@
         function checkLevelUp() {
             const currentRealm = REALMS[gameState.realmIndex];
             if (gameState.experience >= currentRealm.maxExp) {
+                if (gameState.realmIndex >= REALMS.length - 1) {
+                    logToConsole(`§CẢNH GIỚI TỐI CAO: Bạn đã đạt cảnh giới cuối cùng **${currentRealm.name}**!`);
+                    gameState.experience = currentRealm.maxExp; // Stop increasing EXP
+                    return;
+                }
+
                 // Thử đột phá
                 const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
                 const breakthroughChance = 0.5 + boneStat.breakthroughBonus; // Base 50% + Bone Bonus
@@ -688,6 +696,8 @@
         // --- GAME LOOPS ---
 
         function startTuoXianLoop() {
+            if (tuXianInterval) clearInterval(tuXianInterval);
+
             tuXianInterval = setInterval(() => {
                 if (gameState.currentView !== 'TuoXian') return;
                 
@@ -702,6 +712,8 @@
         }
 
         function startRegenLoop() {
+            if (healthRegenInterval) clearInterval(healthRegenInterval);
+
             healthRegenInterval = setInterval(() => {
                 // Tăng HP (tái tạo)
                 const hpRegen = Math.max(1, Math.floor(gameState.maxHP * 0.01)); // 1% Max HP
@@ -717,6 +729,8 @@
         }
 
         function startTimeTick() {
+            if (timeTickInterval) clearInterval(timeTickInterval);
+
             timeTickInterval = setInterval(() => {
                 gameTicks++;
 
@@ -738,12 +752,14 @@
                          gameState.lastTournamentDay = gameState.currentDay;
                     }
 
-                    updateUI(); // Cập nhật hiển thị ngày
+                    // Cập nhật hiển thị ngày
+                    document.getElementById('time-display').textContent = `Ngày: ${gameState.currentDay} | Tick: 0`; // Reset tick display
+                    updateUI(); 
                     
                     if (gameState.currentView === 'Trade') renderView('Trade'); // Re-render Trade tab to show new daily item/auction
+                } else {
+                    document.getElementById('time-display').textContent = `Ngày: ${gameState.currentDay} | Tick: ${gameTicks % DAY_DURATION_TICKS}`;
                 }
-                
-                document.getElementById('time-display').textContent = `Ngày: ${gameState.currentDay} | Tick: ${gameTicks % DAY_DURATION_TICKS}`;
                 
             }, GAME_TICK_INTERVAL);
         }
@@ -753,7 +769,7 @@
 
         function getMonsterStats(monster) {
             const realm = REALMS[monster.minRealm];
-            const realmMultiplier = monster.minRealm + 1;
+            // Fix: Realm multiplier logic was flawed. Now use base stats of realm + base stats of monster.
             return {
                 hp: monster.baseHp + (realm.baseDmg * 10),
                 atk: monster.baseAtk + (realm.baseDef * 5),
@@ -823,10 +839,11 @@
             gameState.currentHP = Math.max(0, gameState.currentHP - monsterDamage);
 
             // Player attack (Auto attack)
-            const playerDamage = Math.max(1, gameState.totalAttack - monster.attack * 0.2); // Player damage ignores most monster defense
+            // Fix: Player damage calculation was too complex, simplifying to be effective against monster HP
+            const playerDamage = Math.max(1, gameState.totalAttack * 1.2 - monster.attack * 0.2); 
             monster.currentHp = Math.max(0, monster.currentHp - playerDamage);
 
-            logToConsole(`XQuái vật gây **${monsterDamage}** sát thương. Bạn gây **${playerDamage}** sát thương.`);
+            logToConsole(`XQuái vật gây **${monsterDamage.toFixed(0)}** sát thương. Bạn gây **${playerDamage.toFixed(0)}** sát thương.`);
 
             if (gameState.currentHP <= 0) {
                 window.handleCombatLoss(monster);
@@ -834,7 +851,7 @@
                 window.handleCombatWin(monster);
             }
 
-            updateUI();
+            updateUI(); // Cập nhật UI trong vòng lặp combat
         }
         
         window.handleActionSkill = function(skill) {
@@ -848,7 +865,7 @@
              gameState.currentMP -= skill.mpCost;
              
              // Gây sát thương kỹ năng (VD: 1.5x Tấn Công)
-             const skillDamage = Math.max(1, (gameState.totalAttack * skill.damageMultiplier) - gameState.currentMonster.attack * 0.2);
+             const skillDamage = Math.max(1, (gameState.totalAttack * skill.damageMultiplier) - gameState.currentMonster.attack * 0.1); // Sát thương kỹ năng cao hơn
              gameState.currentMonster.currentHp = Math.max(0, gameState.currentMonster.currentHp - skillDamage);
              
              logToConsole(`!Bạn thi triển **${skill.name}**, gây **${skillDamage.toFixed(0)}** sát thương cực mạnh!`);
@@ -856,7 +873,7 @@
              if (gameState.currentMonster.currentHp <= 0) {
                  window.handleCombatWin(gameState.currentMonster);
              }
-             updateUI();
+             updateUI(); // Cập nhật UI ngay sau khi dùng kỹ năng
         }
 
         window.handleCombatWin = function(monster) {
@@ -929,7 +946,7 @@
             
             if (button.textContent === 'BẬT TỰ ĐỘNG CHIẾN ĐẤU') {
                 button.textContent = 'DỪNG TỰ ĐỘNG';
-                window.logToConsole("•Bật chế độ Tự Động Chiến Đấu.");
+                window.logToConsole("•Bật chế độ Tự Động Chiến Đấu. Tự động chiến đấu với Linh Xà Độc.");
                 window.handleStartCombat(monster.id, 'Wilderness');
             } else {
                 button.textContent = 'BẬT TỰ ĐỘNG CHIẾN ĐẤU';
@@ -994,10 +1011,10 @@
             gameState.currentHP = Math.max(0, gameState.currentHP - npcDamage);
             
             // Player attack
-            let playerDamage = Math.max(1, gameState.totalAttack - npc.defense);
+            let playerDamage = Math.max(1, gameState.totalAttack - npc.defense * 0.2); // Fix: Player attack more effective
             npc.currentHp = Math.max(0, npc.currentHp - playerDamage);
             
-            logToConsole(`X**${npc.name}** gây **${npcDamage}** sát thương. Bạn gây **${playerDamage}** sát thương.`);
+            logToConsole(`X**${npc.name}** gây **${npcDamage.toFixed(0)}** sát thương. Bạn gây **${playerDamage.toFixed(0)}** sát thương.`);
 
             if (gameState.currentHP <= 0) {
                 window.handleNPCCombatLoss(npc);
@@ -1005,7 +1022,7 @@
                 window.handleNPCCombatWin(npc);
             }
 
-            updateUI();
+            updateUI(); // Cập nhật UI trong vòng lặp combat
         }
         
         window.handleNPCCombatWin = function(npc) {
@@ -1044,6 +1061,29 @@
             updateUI();
             renderView('NPC');
             window.saveGame(gameState);
+        }
+        
+        // NEW FUNCTION: Handle general NPC interaction/dialogue
+        window.handleNPCInteract = function(npcId) {
+             const npc = MOCK_NPCS.find(n => n.id === npcId);
+             if (!npc || !npc.canInteract) {
+                 return logToConsole("XNPC này không có tùy chọn giao tiếp.");
+             }
+             
+             if (npc.id === 'thanhvan' && !gameState.npcInteractions.thanhvan_advice_atk) {
+                 gameState.baseAttack += 5;
+                 gameState.npcInteractions.thanhvan_advice_atk = true;
+                 logToConsole("!Sư Tỷ Thanh Vân mỉm cười: 'Sát cơ là nền tảng của chiến đấu.'");
+                 logToConsole("•Bạn được chỉ điểm: **+5 Tấn Công** vĩnh viễn.");
+             } else if (npc.id === 'truonglao') {
+                  logToConsole("!Trưởng Lão Dược Các: 'Thương hội hôm nay có nhiều vật phẩm hay, hãy xem qua.'");
+             } else {
+                 logToConsole(`!**${npc.name}**: 'Hôm nay ta không có việc gì cần bận tâm. Ngươi đi thong thả.'`);
+             }
+             
+             calculateStats();
+             updateUI();
+             renderView('NPC');
         }
 
 
@@ -1120,7 +1160,7 @@
                  
             } else {
                  // Người chơi thắng
-                 gameState.spiritStone -= newBid;
+                 // Tiền sẽ được trừ khi người chơi nhấn nút MUA NGAY.
                  logToConsole(`•ĐẤU GIÁ: Bạn đặt giá thành công **${newBid.toLocaleString()} LT** và là người đặt giá cao nhất!`);
                  // Kích hoạt nút MUA
             }
@@ -1133,7 +1173,12 @@
                  return logToConsole("XBạn không phải là người đặt giá cao nhất. Không thể mua.");
             }
             
-            // Người chơi đã bị trừ tiền trong hàm handleBid, nên chỉ cần lấy item và reset
+            if (gameState.spiritStone < price) {
+                 return logToConsole(`XBạn không đủ Linh Thạch để thanh toán **${price.toLocaleString()} LT**.`);
+            }
+            
+            // Trừ tiền khi MUA NGAY
+            gameState.spiritStone -= price;
             
             logToConsole(`§MUA THÀNH CÔNG: Bạn đã mua **${item.name}** với giá **${price.toLocaleString()} LT**!`);
             
@@ -1230,15 +1275,13 @@
             
             // Loại bỏ các chỉ số cấp thấp hơn chỉ số hiện tại để đảm bảo nâng cấp (tăng tỷ lệ thành công)
             const oldIndex = statList.findIndex(s => s.name === oldStat);
-            const upgradeList = statList.slice(oldIndex + 1);
+            // Slice từ index hiện tại + 1 (để đảm bảo ít nhất là giữ nguyên hoặc cao hơn)
+            const upgradeList = statList.slice(oldIndex + 1); 
             
             if (upgradeList.length === 0) {
                  logToConsole(`•**${logType}** của bạn đã đạt cảnh giới tối cao (${oldStat}).`);
                  return;
             }
-            
-            // Chỉ định rarity cho các chỉ số nâng cấp
-            const totalRarity = upgradeList.reduce((sum, s) => sum + s.rarity, 0);
             
             // Cơ hội thất bại (nếu thất bại thì giữ nguyên chỉ số hiện tại)
             if (Math.random() < 0.25) { // 25% fail chance even with pills
@@ -1247,7 +1290,14 @@
             }
 
             // Chọn chỉ số mới (đảm bảo nó là cấp cao hơn)
-            newStat = pickRandomStat(upgradeList);
+            // Lấy 75% cơ hội chọn trong 3 cấp độ tiếp theo, 25% chọn cấp độ cao nhất
+            const effectiveList = upgradeList.slice(0, 3).length > 0 ? upgradeList.slice(0, 3) : upgradeList;
+            newStat = pickRandomStat(effectiveList);
+
+            // Kiểm tra lại, nếu chỉ số mới thấp hơn chỉ số cũ (do lỗi logic chọn), thì chọn chỉ số cũ + 1
+            if (statList.findIndex(s => s.name === newStat.name) <= oldIndex) {
+                 newStat = statList[oldIndex + 1] || statList[statList.length - 1];
+            }
             
             gameState[statNameKey] = newStat.name;
             gameState[statValueKey] = newStat.multiplier;
@@ -1454,25 +1504,17 @@
             
             // Manage Game Loops
             if (viewName === 'TuoXian') {
-                 if (combatInterval) clearInterval(combatInterval);
-                 if (npcCombatInterval) clearInterval(npcCombatInterval);
-                 combatInterval = null;
-                 npcCombatInterval = null;
+                 window.stopCombat();
+                 window.stopNPCCombat();
                  startTuoXianLoop();
-                 gameState.currentMonster = null; // Clear combat state
-                 gameState.currentNPCCombat = null;
             } else if (viewName === 'Combat' || viewName === 'NPC') {
                  if (tuXianInterval) clearInterval(tuXianInterval);
                  tuXianInterval = null;
                  // Combat/NPC loops are started by action functions (handleStartCombat/handleStartNPCCombat)
             } else {
-                 if (combatInterval) clearInterval(combatInterval);
-                 if (npcCombatInterval) clearInterval(npcCombatInterval);
-                 combatInterval = null;
-                 npcCombatInterval = null;
+                 window.stopCombat();
+                 window.stopNPCCombat();
                  startTuoXianLoop(); // Resume TuoXian in non-combat tabs
-                 gameState.currentMonster = null;
-                 gameState.currentNPCCombat = null;
             }
 
             // Render Content
@@ -1517,7 +1559,7 @@
                     const hpPercent = (monster.currentHp / monster.maxHp) * 100;
                     
                     contentDiv.innerHTML = `
-                        <h2 class="text-3xl text-center text-red-400 mb-4">${gameState.currentCombatMode === 'Dungeon' ? 'ĐÁNH BOSS PHÓ BẢN' : 'CHIẾN ĐẤU HOANG DÃ'}</h2>
+                        <h2 class="text-3xl text-center text-red-400 mb-4">${gameState.currentCombatMode === 'Dungeon' ? 'ĐÁNH BOSS PHÓ BẢN' : 'CHIẾN ĐẤU HOANG DÃ (TỰ ĐỘNG)'}</h2>
                         
                         <div class="pixel-card bg-red-800 border-red-500 p-4 mb-4">
                             <h3 class="text-2xl text-yellow-300">${monster.name}</h3>
@@ -1562,7 +1604,7 @@
                                     <button class="game-button text-xs p-1" 
                                             onclick="handleStartCombat(${monster.id}, 'Wilderness')"
                                             ${gameState.realmIndex < monster.minRealm ? 'disabled' : ''}>
-                                        CHIẾN ĐẤU
+                                        CHIẾN ĐẤU (Tự Động)
                                     </button>
                                 </div>
                             `).join('')}
@@ -1579,7 +1621,7 @@
                                      <button class="game-button text-xs p-1" 
                                              onclick="handleStartCombat(null, 'Dungeon', '${dungeon.id}')"
                                              ${gameState.realmIndex < dungeon.realmIndex ? 'disabled' : ''}>
-                                         TIẾN VÀO
+                                         TIẾN VÀO (Tự Động)
                                      </button>
                                  </div>
                              `).join('')}
@@ -1612,7 +1654,7 @@
                             <button class="game-button text-base p-2 w-full bg-green-600 border-green-300 hover:bg-green-700"
                                     onclick="handleBuyAuctionItem(${JSON.stringify(auctionItem).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')}, ${gameState.auctionPrice})"
                                     ${!isHighestBidder ? 'disabled' : ''}>
-                                MUA NGAY (DÀNH CHO NGƯỜI ĐẶT GIÁ CAO NHẤT)
+                                MUA NGAY (THANH TOÁN ${gameState.auctionPrice.toLocaleString()} LT)
                             </button>
                         </div>
                     `;
@@ -1778,7 +1820,7 @@
                       const hpPercent = (npc.currentHp / npc.maxHp) * 100;
                       
                       contentDiv.innerHTML = `
-                          <h2 class="text-3xl text-center text-red-400 mb-4">THÁCH ĐẤU NPC</h2>
+                          <h2 class="text-3xl text-center text-red-400 mb-4">THÁCH ĐẤU NPC (TỰ ĐỘNG)</h2>
                           
                           <div class="pixel-card bg-red-800 border-red-500 p-4 mb-4">
                               <h3 class="text-2xl text-yellow-300">${npc.name} (${npc.realm})</h3>
@@ -1811,12 +1853,16 @@
                                </div>
                                <div>
                                    ${npc.isChallengable ? 
-                                        `<button class="game-button text-xs p-1" onclick="handleStartNPCCombat('${npc.id}')"
+                                        `<button class="game-button text-xs p-1 mb-2 w-full" onclick="handleStartNPCCombat('${npc.id}')"
                                                  ${gameState.realmIndex < REALMS.findIndex(r => r.name === npc.realm) ? 'disabled' : ''}>
                                             THÁCH ĐẤU
                                         </button>` 
+                                        : ''
+                                   }
+                                   ${npc.canInteract ? 
+                                        `<button class="game-button text-xs p-1 w-full bg-green-600 border-green-300 hover:bg-green-700" onclick="handleNPCInteract('${npc.id}')">TƯƠNG TÁC</button>`
                                         : 
-                                        `<button class="game-button text-xs p-1" disabled>TƯƠNG TÁC</button>`
+                                        ''
                                    }
                                </div>
                            </div>
