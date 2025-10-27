@@ -159,11 +159,29 @@
             background-color: #9333ea; /* Purple for MP/Mana */
             transition: width 0.3s ease-in-out;
         }
+        
+        /* --- NEW STATS PANEL STYLING --- */
+        .stat-group-header {
+            font-size: 1.5rem;
+            color: #fcd34d;
+            border-bottom: 2px solid #4b5563;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 1.15rem;
+        }
     </style>
 </head>
 <body class="p-4 flex justify-center items-center min-h-screen">
 
-    <div id="game-container" class="w-full max-w-5xl pixel-border bg-gray-800 p-6">
+    <div id="game-container" class="w-full max-w-6xl pixel-border bg-gray-800 p-6">
         <h1 class="text-4xl text-center mb-4 text-yellow-300">HÀNH TRÌNH VÔ THƯỢNG</h1>
         <p id="user-id-display" class="text-sm text-center mb-2 text-gray-500">Chế độ: OFFLINE (Lưu trữ cục bộ)</p>
         <p id="time-display" class="text-xl text-center mb-4 text-orange-400">Ngày: 1 | Tháng: 1</p>
@@ -173,33 +191,61 @@
             
             <div id="stats-panel" class="lg:col-span-1 flex flex-col space-y-4">
                 
-                <div class="pixel-card bg-gray-700">
-                    <h2 class="text-xl mb-2 text-yellow-300 border-b border-gray-500">THÔNG TIN TU GIẢ</h2>
-                    <p>Cảnh Giới: <span id="stat-realm" class="text-green-400"></span></p>
-                    <p>Công Pháp: <span id="stat-method" class="text-yellow-400">Chưa học</span></p>
-                    <p>Linh Thạch: <span id="stat-money" class="text-yellow-400"></span></p>
-                    <p>Linh Căn: <span id="stat-spirit-root" class="text-purple-400"></span></p>
-                    <p>Căn Cốt: <span id="stat-bone" class="text-orange-400"></span></p>
+                <div class="pixel-card bg-gray-700 p-0">
+                    <div id="character-art" class="bg-gray-900 h-48 flex justify-center items-center text-gray-500 text-xl font-bold border-b-4 border-gray-600">
+                        Ảnh Nhân Vật (Sẽ cập nhật sau)
+                    </div>
+                    
+                    <div class="p-4">
+                        <h2 class="stat-group-header text-yellow-300">THÔNG TIN CƠ BẢN</h2>
+                        <div class="stat-item">
+                            <span>Cảnh Giới:</span> <span id="stat-realm" class="text-green-400 font-bold"></span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Linh Thạch:</span> <span id="stat-money" class="text-yellow-400 font-bold"></span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="pixel-card bg-gray-700">
-                    <h2 class="text-xl mb-2 text-red-400 border-b border-gray-500">CHỈ SỐ CHIẾN ĐẤU</h2>
-                    <p>Tấn Công: <span id="stat-attack" class="text-red-400">0</span></p>
-                    <p>Phòng Thủ: <span id="stat-defense" class="text-blue-400">0</span></p>
 
-                    <p class="mt-2">HP: <span id="stat-hp" class="text-red-400">0/0</span></p>
-                    <div class="progress-bar-hp mt-1">
+                <div class="pixel-card bg-gray-700">
+                    <h2 class="stat-group-header text-red-400">CHỈ SỐ CHIẾN ĐẤU</h2>
+                    
+                    <div class="stat-item">
+                        <span>Tấn Công:</span> <span id="stat-attack" class="text-red-400 font-bold">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Phòng Thủ:</span> <span id="stat-defense" class="text-blue-400 font-bold">0</span>
+                    </div>
+                    
+                    <p class="mt-4 mb-1">HP: <span id="stat-hp" class="text-red-400">0/0</span></p>
+                    <div class="progress-bar-hp">
                         <div id="hp-progress" class="progress-fill-hp" style="width: 100%"></div>
                     </div>
                     
-                    <p class="mt-2">Linh Khí (MP): <span id="stat-mp" class="text-purple-400">0/0</span></p>
-                    <div class="progress-bar-mp mt-1">
+                    <p class="mt-2 mb-1">Linh Khí (MP): <span id="stat-mp" class="text-purple-400">0/0</span></p>
+                    <div class="progress-bar-mp">
                         <div id="mp-progress" class="progress-fill-mp" style="width: 100%"></div>
                     </div>
                 </div>
+                
+                <div class="pixel-card bg-gray-700">
+                    <h2 class="stat-group-header text-blue-400">THÔNG TIN TU LUYỆN</h2>
+                    
+                    <div class="stat-item">
+                        <span>Linh Căn:</span> <span id="stat-spirit-root" class="text-purple-400 font-bold"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Căn Cốt:</span> <span id="stat-bone" class="text-orange-400 font-bold"></span>
+                    </div>
+                    <div class="stat-item mt-2">
+                        <span>Công Pháp:</span> <span id="stat-cultivation-method" class="text-blue-300 font-bold"></span>
+                    </div>
+
+                    <div id="sect-info" class="mt-4 text-sm text-center"></div>
+                </div>
 
                 <div class="pixel-card bg-gray-700">
-                    <h2 class="text-xl mb-2 text-blue-400 border-b border-gray-500">TIẾN TRÌNH TU VI</h2>
+                    <h2 class="stat-group-header text-green-400">TIẾN TRÌNH TU VI</h2>
                     <p class="text-base mb-1">Tu Vi: <span id="stat-exp" class="text-blue-400">0</span></p>
                     <div class="progress-bar-exp">
                         <div id="exp-progress" class="progress-fill-exp" style="width: 0%"></div>
@@ -207,13 +253,15 @@
                     <button class="game-button p-2 text-base w-full mt-3" onclick="handleActionSave()">LƯU TRỮ TIẾN TRÌNH</button>
                 </div>
 
+
             </div>
 
             <div class="lg:col-span-3 flex flex-col">
-                <div id="main-tabs" class="grid grid-cols-4 gap-0 mb-0 border-b-4 border-gray-600">
+                <div id="main-tabs" class="grid grid-cols-5 gap-0 mb-0 border-b-4 border-gray-600">
                     <button id="tab-TuoXian" class="tab-button p-3 text-xl active" onclick="switchView('TuoXian')">TỌA THIỀN</button>
                     <button id="tab-Combat" class="tab-button p-3 text-xl" onclick="switchView('Combat')">CHIẾN ĐẤU</button>
                     <button id="tab-Trade" class="tab-button p-3 text-xl" onclick="switchView('Trade')">THƯƠNG HỘI</button>
+                    <button id="tab-Sect" class="tab-button p-3 text-xl" onclick="switchView('Sect')">TÔNG MÔN</button>
                     <button id="tab-NPC" class="tab-button p-3 text-xl" onclick="switchView('NPC')">NPC</button>
                 </div>
 
@@ -228,9 +276,10 @@
     </div>
 
     <script>
-        // --- GAME DATA AND CONFIGURATION ---
+        // --- GAME DATA AND CONFIGURATION (NO CHANGE) ---
         const GAME_TICK_INTERVAL = 1000; // 1 second
         const DAY_DURATION_TICKS = 60; // 60 seconds = 1 day
+        const TOURNAMENT_INTERVAL_DAYS = 6; // Tỷ Võ Tông Môn 6 ngày/lần
 
         // CĂN CỐT (Total Rarity of last 3 is 10%)
         const BONE_QUALITIES = [
@@ -255,12 +304,16 @@
             { name: "Thái Dương Căn (Cực Hiếm)", multiplier: 6.0, mpBonus: 6.0, mpRegen: 5.0, rarity: 1.5 }, // 1.5%
             { name: "Hỗn Độn Căn (Vô Thượng)", multiplier: 8.0, mpBonus: 8.0, mpRegen: 6.0, rarity: 0.5 }, // 0.5%
         ];
-        
-        // CÔNG PHÁP (Cultivation Methods) - NEW
+
+        // CÔNG PHÁP MỚI
+        // Loại bỏ công pháp mặc định và thêm 'Tàng Kinh Các' công pháp
         const CULTIVATION_METHODS = [
-            { name: "Phàm Nhân Tọa Công", price: 0, type: "default", description: "Công pháp cơ bản, không có hiệu ứng đặc biệt." },
-            { name: "Thái Huyền Kiếm Quyết", price: 5000, type: "attack", bonus: 10, description: "Tăng 10 điểm Tấn Công cơ bản khi luyện. (Tàng Kinh Các)" },
-            { name: "Vạn Pháp Quy Nguyên Công", price: 5000, type: "defense", bonus: 10, description: "Tăng 10 điểm Phòng Thủ cơ bản khi luyện. (Tàng Kinh Các)" },
+            { name: "Thái Huyền Kiếm Quyết", bonus: { atk: 10, expMultiplier: 1.0 }, cost: 0, description: "Tăng 10 Tấn Công, Tốc độ Tu Vi x1.0." },
+            { name: "Vạn Pháp Quy Nguyên Công", bonus: { def: 10, expMultiplier: 1.0 }, cost: 0, description: "Tăng 10 Phòng Thủ, Tốc độ Tu Vi x1.0." },
+            { name: "Huyết Sát Ma Kinh", bonus: { atk: 25, hp: 0.1, expMultiplier: 0.8 }, cost: 50000, description: "Tăng 25 Tấn Công, 10% Max HP. Tốc độ Tu Vi x0.8. (50,000 LT)." },
+            { name: "Thanh Mộc Trường Sinh Quyết", bonus: { hp: 0.2, def: 5, expMultiplier: 1.2 }, cost: 75000, description: "Tăng 20% Max HP, 5 Phòng Thủ. Tốc độ Tu Vi x1.2. (75,000 LT)." },
+            { name: "Kim Cương Bất Hoại", bonus: { def: 30, expMultiplier: 0.9 }, cost: 100000, description: "Tăng 30 Phòng Thủ. Tốc độ Tu Vi x0.9. (100,000 LT)." },
+            { name: "Vô Thượng Thiên Công", bonus: { atk: 50, def: 50, expMultiplier: 1.5 }, cost: 100, isSectSkill: true, sectContribution: 10000, description: "Chỉ số toàn diện. Cần Cống Hiến Tông Môn 10,000." },
         ];
 
 
@@ -296,6 +349,12 @@
             { id: 5, name: "Cửu Vỹ Hồ Ly", minRealm: 13, requiredRealm: "Luyện Hư", baseHp: 15000, baseAtk: 500, exp: 30000, loot: { 'Hồ Yêu Nội Đan': 1.0, 'Huyền Thiết': 0.5, 'Tử Kim Linh Thạch': 0.05 } }, // Đồ hiếm 5%
         ];
 
+        // PHÓ BẢN MỚI
+        const DUNGEONS = [
+            { id: 'ancient_tomb', name: "Cổ Mộ Tiên Tôn", requiredRealm: "Trúc Cơ Trung Kỳ", realmIndex: 5, reward: 20000, exp: 5000, baseHp: 3000, baseAtk: 150, loot: { 'Tử Kim Linh Thạch': 0.1, 'Bí Pháp Quyển': 0.5 } },
+            { id: 'demon_realm', name: "Ma Giới Liệt Kê", requiredRealm: "Kim Đan Trung Kỳ", realmIndex: 8, reward: 50000, exp: 15000, baseHp: 10000, baseAtk: 400, loot: { 'Thiên Thần Đan': 0.1, 'Tử Kim Linh Thạch': 0.5 } },
+        ];
+
         const LOOT_PRICES = {
             'Yêu Thú Tàn Thi': { price: 20, type: 'common' },
             'Bình Phàm Đan': { price: 50, type: 'common' },
@@ -312,6 +371,8 @@
             'Hồ Yêu Nội Đan': { price: 50000, type: 'rare' },
             'Thiên Thần Đan': { price: 100000, type: 'super_rare' },
             'Tử Kim Linh Thạch': { price: 500000, type: 'super_rare' },
+            // VẬT PHẨM MỚI: Tỷ lệ rơi 1% (0.01)
+            'Thiên Phạt Lệnh': { price: 100000, type: 'super_rare' }, 
         };
 
         const TRADE_ITEMS = [
@@ -331,15 +392,43 @@
             { name: "Cải Cốt Đan", basePrice: 50000, type: "bone_change", description: "Cơ hội cải tạo Căn Cốt cao hơn (Cực Hiếm)." },
             { name: "Tẩy Tủy Đan", basePrice: 80000, type: "root_change", description: "Cơ hội cải tạo Linh Căn cao hơn (Cực Hiếm)." },
             { name: "Thần Binh Phù", basePrice: 150000, type: "atk_mega", bonus: 100, description: "Tăng 100 điểm Tấn Công vĩnh viễn (Siêu phẩm)." },
-            { name: "Huyết Sát Ma Kinh", basePrice: 50000, type: "cultivation_method", description: "Công pháp hiếm, tăng 20 Tấn Công, giảm 10 Phòng Thủ. (Đấu Giá)" }, // ADDED CULTIVATION METHOD
         ];
         
         const MOCK_NPCS = [
             { id: 'thanhvan', name: "Sư Tỷ Thanh Vân", realm: "Luyện Khí Tầng 3", baseAtk: 50, baseDef: 20, baseHp: 300, isChallengable: false, description: "Bận rộn luyện đan, có thể chỉ điểm công pháp." },
             { id: 'truonglao', name: "Trưởng Lão Dược Các", realm: "Trúc Cơ Trung Kỳ", baseAtk: 100, baseDef: 50, baseHp: 800, isChallengable: false, description: "Người quản lý vật phẩm hiếm, có thể trao đổi bảo vật." },
-            { id: 'thientai', name: "Thiên Tài Huyền Băng", realm: "Kim Đan Sơ Kỳ", baseAtk: 200, baseDef: 100, baseHp: 1500, isChallengable: true, reward: 10000, description: "Tu Giả kiêu ngạo, có thể thách đấu để nhận thưởng lớn." },
-            { id: 'sugia', name: "Sư Già Tiền Bối", realm: "Nguyên Anh Hậu Kỳ", baseAtk: 500, baseDef: 250, baseHp: 5000, isChallengable: true, reward: 50000, description: "Cao nhân ẩn dật, có thể thách đấu để nhận thưởng khủng." }
+            { 
+                id: 'thientai', 
+                name: "Thiên Tài Huyền Băng", 
+                realm: "Kim Đan Sơ Kỳ", 
+                baseAtk: 200, 
+                baseDef: 100, 
+                baseHp: 1500, 
+                isChallengable: true, 
+                reward: 10000, 
+                description: "Tu Giả kiêu ngạo, có thể thách đấu để nhận thưởng lớn.",
+                loot: { 'Thiên Phạt Lệnh': 0.001 } // Tỷ lệ rơi 0.1%
+            },
+            { 
+                id: 'sugia', 
+                name: "Sư Già Tiền Bối", 
+                realm: "Nguyên Anh Hậu Kỳ", 
+                baseAtk: 500, 
+                baseDef: 250, 
+                baseHp: 5000, 
+                isChallengable: true, 
+                reward: 50000, 
+                description: "Cao nhân ẩn dật, có thể thách đấu để nhận thưởng khủng.",
+                loot: { 'Thiên Phạt Lệnh': 0.01 } // Tỷ lệ rơi 1% theo yêu cầu
+            }
         ];
+        
+        const SECTS = [
+            { name: "Thái Huyền Kiếm Tông", expBonus: 1.1, defBonus: 10, requirement: 3 }, // Luyện Khí 3
+            { name: "Vạn Pháp Các", expBonus: 1.2, defBonus: 5, requirement: 5 }, // Trúc Cơ Sơ Kỳ
+            { name: "Huyết Ma Giáo", expBonus: 1.0, defBonus: 20, requirement: 7 }, // Kim Đan Sơ Kỳ
+        ];
+
 
         // --- GAME STATE (Initial Values for New Game) ---
         const initialGameState = {
@@ -357,59 +446,73 @@
             boneQuality: null, 
             spiritRootName: null, 
             boneQualityName: null, 
-            knownCultivationMethods: [], // NEW: Danh sách công pháp đã học
-            activeCultivationMethod: null, // NEW: Công pháp đang sử dụng (Chưa học)
-            // Removed: cultivationMethod: ['Thái Huyền Kiếm Quyết', 'Vạn Pháp Quy Nguyên Công', 'Huyết Sát Ma Kinh'][Math.floor(Math.random() * 3)],
-            inventory: { 'Yêu Thú Tàn Thi': 0, 'Bình Phàm Đan': 0, 'Hắc Báo Bì': 0, 'Kim Tinh Thạch': 0, 'Bí Pháp Quyển': 0, 'Trúc Cơ Đan': 0, 'Linh Căn Thảo': 0 },
+            cultivationMethodName: null, // KHÔNG CÓ CÔNG PHÁP BAN ĐẦU
+            cultivationMethod: null,     // KHÔNG CÓ CÔNG PHÁP BAN ĐẦU
+            inventory: { 
+                'Yêu Thú Tàn Thi': 0, 
+                'Bình Phàm Đan': 0, 
+                'Hắc Báo Bì': 0, 
+                'Kim Tinh Thạch': 0, 
+                'Bí Pháp Quyển': 0, 
+                'Trúc Cơ Đan': 0, 
+                'Linh Căn Thảo': 0, 
+                'Thiên Phạt Lệnh': 0 
+            },
             currentView: 'TuoXian',
-            currentMonster: null, 
-            currentNPCCombat: null, // NPC đang chiến đấu
-            
+            currentMonster: null,
+            currentNPCCombat: null,
             // Time & Shop States
-            currentDay: 1, // Day 1-30 in a month
+            currentDay: 1,
             lastAuctionDay: 0,
             dailyItem: null,
-
-            // Fix bug NPC: theo dõi tương tác (Chỉ được nhận 1 lần)
+            auctionItem: null, // Vật phẩm đấu giá hiện tại
+            auctionPrice: 0,   // Giá hiện tại
+            auctionBidder: 'NPC 1', // Người đặt giá cao nhất
+            
+            // NPC interaction states
             npcInteractions: {
                 thanhvan_advice_atk: false,
-                sugia_advice_def: false
-            }
+                sugia_advice_def: false,
+            },
+            // SECT SYSTEM STATES
+            sectName: null, // Tên tông môn đang tham gia
+            sectRank: 'Phổ Thông Đệ Tử',
+            sectContribution: 0, // Cống hiến tông môn
+            sectBenefits: { expBonus: 1.0, defBonus: 0 },
+            lastTournamentDay: 0, // Ngày cuối cùng diễn ra tỷ võ
+            currentCombatMode: 'Wilderness', // 'Wilderness' or 'Dungeon'
+            learnedMethods: [], // Mảng chứa tên công pháp đã học
         };
 
         let gameState = {}; // State will be loaded/initialized here
-
         let tuXianInterval = null;
         let combatInterval = null;
         let npcCombatInterval = null;
         let healthRegenInterval = null;
         let timeTickInterval = null;
-        let selectedNPC = null; 
+        let selectedNPC = null;
         let gameTicks = 0; // for day tracking
-
 
         // --- CORE GAME FUNCTIONS ---
         
         window.logToConsole = function(message) {
             const consoleElement = document.getElementById('game-console');
             let logMessage = `<p class="text-sm my-1">${message}</p>`;
-
             if (message.startsWith("§")) {
                 logMessage = `<p class="text-base my-1 font-bold text-yellow-300">${message.substring(1)}</p>`;
             } else if (message.startsWith("•")) {
                 logMessage = `<p class="text-sm my-1 text-green-400">${message}</p>`;
             } else if (message.startsWith("X")) {
-                 logMessage = `<p class="text-sm my-1 text-red-500">${message.substring(1)}</p>`;
+                logMessage = `<p class="text-sm my-1 text-red-500">${message.substring(1)}</p>`;
             } else if (message.startsWith("!")) {
-                 logMessage = `<p class="text-sm my-1 text-purple-400">${message.substring(1)}</p>`;
+                logMessage = `<p class="text-sm my-1 text-purple-400">${message.substring(1)}</p>`;
             }
-
             consoleElement.innerHTML += logMessage;
             consoleElement.scrollTop = consoleElement.scrollHeight;
         }
-        
-        // --- INITIALIZATION & GAME START ---
 
+        // --- INITIALIZATION & GAME START ---
+        
         function pickRandomStat(statList) {
             const totalRarity = statList.reduce((sum, s) => sum + s.rarity, 0);
             let rand = Math.random() * totalRarity;
@@ -425,16 +528,18 @@
         function generateInitialStats(state) {
             const root = pickRandomStat(SPIRIT_ROOTS);
             const bone = pickRandomStat(BONE_QUALITIES);
-
             state.spiritRoot = root.multiplier;
             state.spiritRootName = root.name;
             state.boneQuality = bone.multiplier;
             state.boneQualityName = bone.name;
             
-            // Removed: state.cultivationMethod = ['Thái Huyền Kiếm Quyết', 'Vạn Pháp Quy Nguyên Công', 'Huyết Sát Ma Kinh'][Math.floor(Math.random() * 3)];
+            // Bỏ qua việc chọn Công pháp khởi đầu, để null
+            state.cultivationMethodName = null;
+            state.cultivationMethod = null;
+
             return state;
         }
-        
+
         // Main function to start the game
         window.onload = function() {
             window.startGame();
@@ -442,15 +547,34 @@
 
         window.startGame = function() {
             const loadedState = window.loadGame();
-            
             if (loadedState) {
-                gameState = { ...initialGameState, ...loadedState }; 
+                // Merge loaded state with initial to ensure new properties are added (like sectName)
+                gameState = { ...initialGameState, ...loadedState };
+
+                // Ensure new properties exist after loading old save
                 gameState.npcInteractions = gameState.npcInteractions || initialGameState.npcInteractions;
                 gameState.currentDay = gameState.currentDay || 1;
                 gameState.lastAuctionDay = gameState.lastAuctionDay || 0;
-                // NEW: Ensure new cultivation state variables exist on old saves
-                gameState.knownCultivationMethods = gameState.knownCultivationMethods || [];
-                gameState.activeCultivationMethod = gameState.activeCultivationMethod || null;
+                gameState.sectBenefits = gameState.sectBenefits || initialGameState.sectBenefits;
+                gameState.sectRank = gameState.sectRank || initialGameState.sectRank;
+                gameState.sectContribution = gameState.sectContribution || initialGameState.sectContribution;
+                gameState.lastTournamentDay = gameState.lastTournamentDay || initialGameState.lastTournamentDay;
+                gameState.currentCombatMode = gameState.currentCombatMode || initialGameState.currentCombatMode;
+                gameState.learnedMethods = gameState.learnedMethods || initialGameState.learnedMethods;
+
+                // Ensure the loaded cultivation method object is correct
+                if (gameState.cultivationMethodName) {
+                    gameState.cultivationMethod = CULTIVATION_METHODS.find(m => m.name === gameState.cultivationMethodName) || null;
+                } else {
+                    gameState.cultivationMethod = null;
+                }
+
+                // Check for missing inventory items (new items added)
+                for (const item in LOOT_PRICES) {
+                    if (gameState.inventory[item] === undefined) {
+                         gameState.inventory[item] = 0;
+                    }
+                }
                 
                 logToConsole(`§TẢI THÀNH CÔNG: Tiếp tục hành trình từ Cảnh Giới ${REALMS[gameState.realmIndex].name}.`);
             } else {
@@ -458,12 +582,13 @@
                 logToConsole("§KHỞI TẠO MỚI: Không tìm thấy dữ liệu lưu. Bắt đầu hành trình mới.");
                 logToConsole(`§TẠO NHÂN VẬT: Linh Căn của bạn là **${gameState.spiritRootName}** (x${gameState.spiritRoot})!`);
                 logToConsole(`§TẠO NHÂN VẬT: Căn Cốt của bạn là **${gameState.boneQualityName}** (x${gameState.boneQuality})!`);
-                window.saveGame(gameState); 
+                logToConsole(`XNHẮC NHỞ: Bạn không có Công Pháp. Hãy đến Tông Môn để học Công Pháp cơ bản!`);
+                window.saveGame(gameState);
             }
-            
-            // Generate daily item if missing (e.g. first load of the day)
+
+            // Generate daily item if missing 
             if (!gameState.dailyItem || (gameState.currentDay !== 1 && !SPECIAL_ITEMS.find(i => i.name === gameState.dailyItem.name))) {
-                 generateDailySpecialItem();
+                generateDailySpecialItem();
             }
 
             finalizeInit();
@@ -475,11 +600,11 @@
             if (npcCombatInterval) clearInterval(npcCombatInterval);
             if (healthRegenInterval) clearInterval(healthRegenInterval);
             if (timeTickInterval) clearInterval(timeTickInterval);
-            
+
             calculateStats();
             updateUI();
             startTuoXianLoop();
-            startRegenLoop(); 
+            startRegenLoop();
             startTimeTick();
             switchView(gameState.currentView || 'TuoXian');
         }
@@ -488,428 +613,1075 @@
             const currentRealm = REALMS[gameState.realmIndex];
             const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
             const rootStat = SPIRIT_ROOTS.find(r => r.name === gameState.spiritRootName);
+
+            // 1. TÍNH CHỈ SỐ CƠ BẢN
+            let totalMaxHP = 100 + (currentRealm.baseDmg * 5); // Base HP
+            totalMaxHP += (boneStat.hpBonus * currentRealm.baseDmg * 5); // Bone HP Multiplier
+            let totalMaxMP = 50 + (currentRealm.baseDef * 2); // Base MP
+            totalMaxMP += (rootStat.mpBonus * currentRealm.baseDef * 2); // Root MP Multiplier
+
+            let totalAttack = currentRealm.baseDmg + gameState.baseAttack;
+            let totalDefense = currentRealm.baseDef + gameState.baseDefense;
+            let expMultiplier = 1.0;
+            let mpRegenRate = rootStat.mpRegen;
+
+            // 2. TÍNH TOÁN CÔNG PHÁP (MỚI)
+            if (gameState.cultivationMethod) {
+                const methodBonus = gameState.cultivationMethod.bonus;
+                totalAttack += (methodBonus.atk || 0);
+                totalDefense += (methodBonus.def || 0);
+                expMultiplier *= (methodBonus.expMultiplier || 1.0);
+                totalMaxHP *= (1 + (methodBonus.hp || 0)); // % HP Bonus
+            }
+
+            // 3. TÍNH TOÁN LỢI ÍCH TÔNG MÔN
+            if (gameState.sectBenefits) {
+                totalDefense += gameState.sectBenefits.defBonus;
+                expMultiplier *= gameState.sectBenefits.expBonus;
+            }
+
+            // 4. CẬP NHẬT TRẠNG THÁI
+            gameState.totalAttack = Math.floor(totalAttack);
+            gameState.totalDefense = Math.floor(totalDefense);
+            gameState.expMultiplier = expMultiplier;
+            gameState.mpRegenRate = mpRegenRate;
+            gameState.maxHP = Math.floor(totalMaxHP);
+            gameState.maxMP = Math.floor(totalMaxMP);
             
-            // HP
-            gameState.maxHP = 100 + (gameState.realmIndex * 250) + (boneStat?.hpBonus || 1) * 100;
+            // Giữ HP/MP hiện tại không vượt quá Max
             gameState.currentHP = Math.min(gameState.currentHP, gameState.maxHP);
-
-            // MP
-            gameState.maxMP = 50 + (gameState.realmIndex * 100) + (rootStat?.mpBonus || 1) * 50;
             gameState.currentMP = Math.min(gameState.currentMP, gameState.maxMP);
-            gameState.mpRegenRate = (rootStat?.mpRegen || 1) * 2; // Base 2 MP/tick
-
-            // ATK/DEF: Realm Base + Method/Bone Bonus
-            gameState.baseAttack = currentRealm.baseDmg + Math.floor(gameState.realmIndex * 15);
-            gameState.baseDefense = currentRealm.baseDef + Math.floor(gameState.realmIndex * 10);
-            
-            // Apply Method Bonus (simplified) - UPDATED LOGIC
-            if (gameState.activeCultivationMethod) { 
-                if (gameState.activeCultivationMethod.includes('Kiếm Quyết')) gameState.baseAttack += 10;
-                if (gameState.activeCultivationMethod.includes('Quy Nguyên')) gameState.baseDefense += 10;
-                // Áp dụng cho Công pháp Đấu Giá (Huyết Sát Ma Kinh)
-                if (gameState.activeCultivationMethod.includes('Huyết Sát Ma Kinh')) {
-                    gameState.baseAttack += 20;
-                    gameState.baseDefense -= 10; // Giảm phòng thủ
-                }
-            }
-            
-            updateUI();
         }
 
-        function updateUI() {
+        function checkLevelUp() {
             const currentRealm = REALMS[gameState.realmIndex];
-            const nextRealmMaxExp = currentRealm.maxExp;
-            const currentExp = gameState.experience;
-            const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
-
-            // Time Display
-            const currentMonth = Math.floor(gameState.currentDay / 30) + 1;
-            const dayInMonth = (gameState.currentDay % 30) || 30;
-            document.getElementById('time-display').textContent = `Ngày: ${dayInMonth} | Tháng: ${currentMonth}`;
-
-            // Stats Panel Updates
-            document.getElementById('stat-realm').textContent = currentRealm.name;
-            document.getElementById('stat-method').textContent = gameState.activeCultivationMethod || "Chưa học"; // UPDATED LINE
-            document.getElementById('stat-money').textContent = gameState.spiritStone.toLocaleString();
-            document.getElementById('stat-spirit-root').textContent = `${gameState.spiritRootName} (x${gameState.spiritRoot})`;
-            document.getElementById('stat-bone').textContent = `${gameState.boneQualityName} (HP x${boneStat?.hpBonus || 1})`;
-
-            document.getElementById('stat-attack').textContent = gameState.baseAttack;
-            document.getElementById('stat-defense').textContent = gameState.baseDefense;
-            document.getElementById('stat-hp').textContent = `${gameState.currentHP.toFixed(0)} / ${gameState.maxHP.toFixed(0)}`;
-            document.getElementById('stat-mp').textContent = `${gameState.currentMP.toFixed(0)} / ${gameState.maxMP.toFixed(0)} (Hồi: +${gameState.mpRegenRate}/tick)`;
-
-            // Progress Bars
-            const expProgress = Math.min(100, (currentExp / nextRealmMaxExp) * 100);
-            document.getElementById('stat-exp').textContent = `${currentExp.toLocaleString()} / ${nextRealmMaxExp.toLocaleString()}`;
-            document.getElementById('exp-progress').style.width = `${expProgress}%`;
-            
-            const hpProgress = (gameState.currentHP / gameState.maxHP) * 100;
-            document.getElementById('hp-progress').style.width = `${hpProgress}%`;
-
-            const mpProgress = (gameState.currentMP / gameState.maxMP) * 100;
-            document.getElementById('mp-progress').style.width = `${mpProgress}%`;
-
-            // Rerender combat/trade specific UI if needed
-            if (gameState.currentView === 'Combat' && (gameState.currentMonster || gameState.currentNPCCombat)) {
-                renderView('Combat');
-            } else if (gameState.currentView === 'Trade') {
-                renderView('Trade');
-            } else if (gameState.currentView === 'NPC') {
-                renderView('NPC');
-            }
-        }
-
-        // --- TIME AND REGEN LOOPS ---
-
-        function startTimeTick() {
-            if (timeTickInterval) clearInterval(timeTickInterval);
-            timeTickInterval = setInterval(gameTick, GAME_TICK_INTERVAL);
-        }
-
-        function gameTick() {
-            gameTicks++;
-
-            // MP Regen
-            if (gameState.currentMP < gameState.maxMP) {
-                gameState.currentMP = Math.min(gameState.maxMP, gameState.currentMP + gameState.mpRegenRate);
-            }
-
-            // Day Change
-            if (gameTicks % DAY_DURATION_TICKS === 0) {
-                gameState.currentDay++;
-                logToConsole(`!NHẬT KÝ: Hôm nay là Ngày ${gameState.currentDay % 30 || 30} (Tháng ${Math.floor(gameState.currentDay / 30) + 1}).`);
+            if (gameState.experience >= currentRealm.maxExp) {
+                // Thử đột phá
+                const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
+                const breakthroughChance = 0.5 + boneStat.breakthroughBonus; // Base 50% + Bone Bonus
+                const hasBreakthroughPill = gameState.inventory['Trúc Cơ Đan'] > 0;
                 
-                // Monthly Auction Check (Day 30 of the month, and only once per month)
-                if (gameState.currentDay % 30 === 0 && gameState.currentDay > gameState.lastAuctionDay) {
-                    startMonthlyAuction();
+                let success = false;
+                if (hasBreakthroughPill || Math.random() < breakthroughChance) {
+                    success = true;
                 }
 
-                // Generate new Daily Shop Item
-                generateDailySpecialItem();
+                if (success) {
+                    gameState.realmIndex++;
+                    gameState.experience = 0;
+                    gameState.currentHP = gameState.maxHP;
+                    gameState.currentMP = gameState.maxMP;
+                    logToConsole(`§ĐỘT PHÁ THÀNH CÔNG! Bạn đã tiến lên **${REALMS[gameState.realmIndex].name}**!`);
+                    if (hasBreakthroughPill) {
+                         gameState.inventory['Trúc Cơ Đan']--;
+                         logToConsole(`•Trúc Cơ Đan đã được sử dụng. Tồn kho còn: ${gameState.inventory['Trúc Cơ Đan']}.`);
+                    }
+                    // Cập nhật chỉ số sau khi lên cấp
+                    calculateStats(); 
+                } else {
+                    gameState.experience = currentRealm.maxExp * 0.9; // Giảm 10% kinh nghiệm
+                    logToConsole(`XĐỘT PHÁ THẤT BẠI. Tiêu hao linh khí, tu vi giảm nhẹ. Hãy thử lại!`);
+                }
             }
+        }
 
-            updateUI();
+        // --- GAME LOOPS ---
+
+        function startTuoXianLoop() {
+            tuXianInterval = setInterval(() => {
+                if (gameState.currentView !== 'TuoXian') return;
+                
+                // Tọa Thiền: Tăng EXP
+                const expGain = 10 * gameState.expMultiplier;
+                gameState.experience += expGain;
+                
+                checkLevelUp();
+                updateUI();
+                
+            }, GAME_TICK_INTERVAL);
         }
 
         function startRegenLoop() {
-            if (healthRegenInterval) clearInterval(healthRegenInterval);
             healthRegenInterval = setInterval(() => {
-                // Chỉ hồi phục khi không chiến đấu và HP chưa đầy
-                if (gameState.currentHP < gameState.maxHP && !combatInterval && !npcCombatInterval) {
-                    const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
-                    const healRate = 0.05 * (boneStat?.multiplier || 1.0);
-                    const heal = Math.ceil(gameState.maxHP * healRate);
-                    gameState.currentHP = Math.min(gameState.maxHP, gameState.currentHP + heal);
-                    updateUI();
+                // Tăng HP (tái tạo)
+                const hpRegen = Math.max(1, Math.floor(gameState.maxHP * 0.01)); // 1% Max HP
+                gameState.currentHP = Math.min(gameState.maxHP, gameState.currentHP + hpRegen);
+
+                // Tăng MP (Hồi phục linh khí)
+                gameState.currentMP = Math.min(gameState.maxMP, gameState.currentMP + gameState.mpRegenRate);
+
+                if (gameState.currentView !== 'Combat' && gameState.currentView !== 'NPC') {
+                    updateUI(); // Chỉ update khi không trong combat để tránh giật lag
                 }
-            }, 5000);
+            }, GAME_TICK_INTERVAL);
         }
 
-        // --- SHOP & AUCTION ---
+        function startTimeTick() {
+            timeTickInterval = setInterval(() => {
+                gameTicks++;
 
-        function generateDailySpecialItem() {
-            const availableItems = SPECIAL_ITEMS;
-            gameState.dailyItem = availableItems[Math.floor(Math.random() * availableItems.length)];
-            logToConsole(`!THƯƠNG HỘI: Vật phẩm Đặc Biệt Hôm Nay là **${gameState.dailyItem.name}**.`);
-        }
+                if (gameTicks % DAY_DURATION_TICKS === 0) {
+                    gameState.currentDay++;
+                    logToConsole(`§Ngày thứ ${gameState.currentDay} đã bắt đầu.`);
+                    
+                    // Reset Daily Special Item
+                    generateDailySpecialItem();
+                    
+                    // Xử lý đấu giá hàng tháng (Ngày 1 đầu tháng)
+                    if (gameState.currentDay % 30 === 1) { // Coi như 30 ngày là 1 tháng
+                        initializeAuction();
+                    }
 
-        function startMonthlyAuction() {
-            gameState.lastAuctionDay = gameState.currentDay;
-            const auctionItem = AUCTION_ITEMS[Math.floor(Math.random() * AUCTION_ITEMS.length)];
-            const finalPrice = auctionItem.basePrice + Math.floor(Math.random() * auctionItem.basePrice * 0.2); // +20%
-            gameState.auctionItem = { ...auctionItem, currentPrice: finalPrice };
-            logToConsole(`§ĐẤU GIÁ HÀNG THÁNG: Vật phẩm Đấu Giá là **${auctionItem.name}** với giá khởi điểm ${finalPrice.toLocaleString()} Linh Thạch!`);
-        }
+                    // Tỷ Võ Tông Môn (6 ngày/lần)
+                    if (gameState.sectName && (gameState.currentDay - gameState.lastTournamentDay) >= TOURNAMENT_INTERVAL_DAYS) {
+                         logToConsole(`!TÔNG MÔN: Tỷ Võ Tông Môn sẽ diễn ra vào hôm nay!`);
+                         gameState.lastTournamentDay = gameState.currentDay;
+                    }
 
-        window.buyDailyItem = function() {
-            const item = gameState.dailyItem;
-            if (!item) return logToConsole("XShop hôm nay không có vật phẩm đặc biệt.");
-            if (gameState.spiritStone < item.price) return logToConsole("XBạn không đủ Linh Thạch để mua.");
-            
-            gameState.spiritStone -= item.price;
-
-            if (item.type === 'mp') {
-                gameState.currentMP = Math.min(gameState.maxMP, gameState.currentMP + item.bonus);
-                logToConsole(`•Dùng ${item.name}! Hồi ${item.bonus} Linh Khí.`);
-            } else if (item.type === 'hp') {
-                const currentBone = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
-                if (currentBone) currentBone.hpBonus += item.bonus;
-                logToConsole(`•Dùng ${item.name}! Max HP vĩnh viễn tăng thêm.`);
-            } else if (item.type === 'atk') {
-                gameState.baseAttack += item.bonus;
-                logToConsole(`•Dùng ${item.name}! Tấn Công vĩnh viễn tăng ${item.bonus}.`);
-            }
-
-            gameState.dailyItem = null; // Mark as sold for the day
-            calculateStats();
-            window.saveGame(gameState);
-        }
-
-        window.buyAuctionItem = function() {
-            const item = gameState.auctionItem;
-            if (!item) return logToConsole("XHiện không có vật phẩm đấu giá nào.");
-            if (gameState.currentDay % 30 !== 0) return logToConsole("XBạn chỉ có thể mua vật phẩm đấu giá vào Ngày 30.");
-            if (gameState.spiritStone < item.currentPrice) return logToConsole("XBạn không đủ Linh Thạch để thắng đấu giá.");
-            
-            gameState.spiritStone -= item.currentPrice;
-
-            if (item.type === 'bone_change') {
-                const newBone = pickRandomStat(BONE_QUALITIES);
-                gameState.boneQualityName = newBone.name;
-                gameState.boneQuality = newBone.multiplier;
-                logToConsole(`§THẮNG ĐẤU GIÁ! Cải Cốt Đan đã biến đổi Căn Cốt của bạn thành **${newBone.name}**!`);
-            } else if (item.type === 'root_change') {
-                const newRoot = pickRandomStat(SPIRIT_ROOTS);
-                gameState.spiritRootName = newRoot.name;
-                gameState.spiritRoot = newRoot.multiplier;
-                logToConsole(`§THẮNG ĐẤU GIÁ! Tẩy Tủy Đan đã biến đổi Linh Căn của bạn thành **${newRoot.name}**!`);
-            } else if (item.type === 'atk_mega') {
-                gameState.baseAttack += item.bonus;
-                logToConsole(`§THẮNG ĐẤU GIÁ! Tấn Công của bạn tăng thêm ${item.bonus} điểm vĩnh viễn.`);
-            } else if (item.type === 'cultivation_method') { // NEW LOGIC FOR CULTIVATION METHOD
-                if (!gameState.knownCultivationMethods.includes(item.name)) {
-                     gameState.knownCultivationMethods.push(item.name);
-                     gameState.activeCultivationMethod = item.name;
-                     logToConsole(`§THẮNG ĐẤU GIÁ! Bạn đã học và bắt đầu luyện **${item.name}**!`);
-                } else {
-                     logToConsole(`§THẮNG ĐẤU GIÁ! Bạn đã có **${item.name}**, nhận thêm 10000 Tu Vi.`);
-                     gameState.experience += 10000;
+                    updateUI(); // Cập nhật hiển thị ngày
+                    
+                    if (gameState.currentView === 'Trade') renderView('Trade'); // Re-render Trade tab to show new daily item/auction
                 }
-            }
-            
-            delete gameState.auctionItem;
-            calculateStats();
-            window.saveGame(gameState);
-            renderView('Trade');
+                
+                document.getElementById('time-display').textContent = `Ngày: ${gameState.currentDay} | Tick: ${gameTicks % DAY_DURATION_TICKS}`;
+                
+            }, GAME_TICK_INTERVAL);
         }
 
-        // --- CẢNH GIỚI AND TU VI (Unchanged) ---
 
-        function checkExpCap() {
-            const currentRealm = REALMS[gameState.realmIndex];
-            if (gameState.realmIndex < REALMS.length - 1 && gameState.experience >= currentRealm.maxExp) {
-                gameState.experience = currentRealm.maxExp;
-                logToConsole("§TỊCH THUẬN: Tu Vi đã viên mãn. Hãy ĐỘT PHÁ ngay!");
-            }
-        }
+        // --- COMBAT & MONSTER LOGIC ---
 
-        function getBreakthroughSuccessRate() {
-            if (gameState.realmIndex >= REALMS.length - 1) return 0; // Max realm
-            
-            const boneStat = BONE_QUALITIES.find(b => b.name === gameState.boneQualityName);
-            let rate = 0.5; // Base 50%
-            
-            rate += (gameState.realmIndex * 0.05); // +5% per realmIndex
-            rate += (boneStat?.breakthroughBonus || 0);
-            
-            // Check for Trúc Cơ Đan
-            if (gameState.inventory['Trúc Cơ Đan'] > 0) {
-                rate = 1.0; // 100% success
-            }
-
-            return Math.min(1.0, Math.max(0.01, rate)); // Clamp between 1% and 100%
-        }
-
-        window.breakthrough = function() {
-            const currentRealm = REALMS[gameState.realmIndex];
-            const nextRealm = REALMS[gameState.realmIndex + 1];
-            
-            if (gameState.experience < currentRealm.maxExp) {
-                return logToConsole("XTU VI: Tu vi chưa viên mãn! Hãy tiếp tục Tọa Thiền.");
-            }
-            if (gameState.currentHP < gameState.maxHP * 0.5) {
-                return logToConsole("XTHƯƠNG TÍCH: HP thấp quá, dễ Tẩu Hỏa Nhập Ma! Hãy hồi phục đã.");
-            }
-            if (gameState.realmIndex >= REALMS.length - 1) {
-                return logToConsole("§ĐẠO CỰC: Bạn đã đạt đến Cảnh Giới tối cao. Không thể Đột Phá nữa.");
-            }
-
-            const successRate = getBreakthroughSuccessRate();
-            const hasPill = gameState.inventory['Trúc Cơ Đan'] > 0;
-            
-            logToConsole(`!ĐỘT PHÁ: Đang chuẩn bị đột phá từ ${currentRealm.name} lên ${nextRealm.name}... Tỉ lệ thành công: ${(successRate * 100).toFixed(0)}%`);
-
-            // Always consume Trúc Cơ Đan if used
-            if (hasPill) {
-                gameState.inventory['Trúc Cơ Đan']--;
-                logToConsole("•Dùng Trúc Cơ Đan, đảm bảo đột phá thành công!");
-            }
-
-            if (hasPill || Math.random() < successRate) {
-                // Success
-                gameState.realmIndex++;
-                gameState.experience = 0; // Reset exp
-                gameState.currentHP = gameState.maxHP; // Full heal
-                gameState.currentMP = gameState.maxMP; // Full MP
-                logToConsole(`§CHÚC MỪNG! Đột phá thành công lên **${nextRealm.name}**! Chỉ số được tăng cường.`);
-            } else {
-                // Failure
-                logToConsole("XTHẤT BẠI: Đột phá thất bại! Bạn bị Tẩu Hỏa Nhập Ma.");
-                gameState.experience = Math.floor(currentRealm.maxExp * 0.8); // Lose 20% max exp
-                gameState.currentHP = Math.floor(gameState.maxHP * 0.3); // Severe damage
-                if (gameState.currentHP <= 0) gameState.currentHP = 1; 
-            }
-
-            calculateStats(); // Recalculate based on new realm
-            window.saveGame(gameState);
-        }
-
-        // --- TU XIAN (Tọa Thiền) ---
-
-        function startTuoXianLoop() {
-            if (tuXianInterval) clearInterval(tuXianInterval);
-            tuXianInterval = setInterval(tuoXianTick, GAME_TICK_INTERVAL);
-        }
-
-        function tuoXianTick() {
-            const currentRealm = REALMS[gameState.realmIndex];
-            const rootStat = SPIRIT_ROOTS.find(r => r.name === gameState.spiritRootName);
-            
-            // Base gain + multiplier from Spirit Root
-            const baseGain = 10;
-            const expGain = Math.floor(baseGain * gameState.spiritRoot);
-
-            gameState.experience += expGain;
-
-            checkExpCap();
-            updateUI();
-        }
-
-        // --- COMBAT & MONSTER HUNTING (Unchanged) ---
-
-        function generateMonster() {
-            const realmIndex = gameState.realmIndex;
-            // Only consider monsters up to the player's current realm
-            const availableMonsters = MONSTERS.filter(m => m.minRealm <= realmIndex + 1); 
-
-            if (availableMonsters.length === 0) {
-                 return MONSTERS[0]; // Fallback to easiest monster
-            }
-            
-            const monster = availableMonsters[Math.floor(Math.random() * availableMonsters.length)];
-            
-            // Scale monster stats based on player realm relative to monster minRealm
-            const powerDifference = realmIndex - monster.minRealm;
-            const scalingFactor = 1 + (powerDifference > 0 ? powerDifference * 0.1 : 0); // 10% increase per realm above monster's min
-
-            const finalHp = Math.ceil(monster.baseHp * scalingFactor);
-            const finalAtk = Math.ceil(monster.baseAtk * scalingFactor);
-
-            return { 
-                ...monster, 
-                currentHP: finalHp, 
-                maxHP: finalHp,
-                currentATK: finalAtk
+        function getMonsterStats(monster) {
+            const realm = REALMS[monster.minRealm];
+            const realmMultiplier = monster.minRealm + 1;
+            return {
+                hp: monster.baseHp + (realm.baseDmg * 10),
+                atk: monster.baseAtk + (realm.baseDef * 5),
             };
         }
 
-        window.startCombat = function() {
-            if (gameState.currentMonster) return logToConsole("XĐANG CHIẾN ĐẤU: Bạn đang bị bủa vây!");
-            if (gameState.currentHP <= 0) return logToConsole("XTHƯƠNG TÍCH: Không thể chiến đấu khi đã gục ngã.");
-
-            const monster = generateMonster();
-            gameState.currentMonster = monster;
-            logToConsole(`!GẶP ĐỊCH: ${monster.name} xuất hiện!`);
-            
-            switchView('Combat');
-            if (combatInterval) clearInterval(combatInterval);
-            combatInterval = setInterval(combatTick, 1000);
+        function getDungeonStats(dungeon) {
+             const realm = REALMS[dungeon.realmIndex];
+             return {
+                 hp: dungeon.baseHp + (realm.baseDmg * 15),
+                 atk: dungeon.baseAtk + (realm.baseDef * 8),
+             }
         }
 
-        function combatTick() {
-            if (!gameState.currentMonster || gameState.currentHP <= 0) {
-                endCombat();
-                return;
+        window.handleStartCombat = function(monsterId, mode = 'Wilderness', dungeonId = null) {
+            window.stopCombat();
+            
+            const monsterData = MONSTERS.find(m => m.id === monsterId);
+            const dungeonData = DUNGEONS.find(d => d.id === dungeonId);
+
+            if (mode === 'Wilderness' && monsterData) {
+                gameState.currentCombatMode = 'Wilderness';
+                const stats = getMonsterStats(monsterData);
+                gameState.currentMonster = {
+                    ...monsterData,
+                    currentHp: stats.hp,
+                    maxHp: stats.hp,
+                    attack: stats.atk,
+                };
+                logToConsole(`§Bắt đầu chiến đấu với **${monsterData.name}**!`);
+                combatInterval = setInterval(gameCombatTick, GAME_TICK_INTERVAL);
+                switchView('Combat');
+            } else if (mode === 'Dungeon' && dungeonData) {
+                if (gameState.realmIndex < dungeonData.realmIndex) {
+                    logToConsole(`XKhông thể vào **${dungeonData.name}**. Yêu cầu cảnh giới tối thiểu: **${dungeonData.requiredRealm}**.`);
+                    return;
+                }
+                gameState.currentCombatMode = 'Dungeon';
+                const stats = getDungeonStats(dungeonData);
+                gameState.currentMonster = {
+                    ...dungeonData,
+                    currentHp: stats.hp,
+                    maxHp: stats.hp,
+                    attack: stats.atk,
+                };
+                logToConsole(`!Bạn tiến vào Phó Bản **${dungeonData.name}**! Cẩn thận, quái vật rất mạnh!`);
+                combatInterval = setInterval(gameCombatTick, GAME_TICK_INTERVAL);
+                switchView('Combat');
+            } else {
+                logToConsole("XLỗi: Không tìm thấy quái vật hoặc chế độ chiến đấu không hợp lệ.");
             }
+            updateUI();
+        };
 
-            // Player Attack (Base Attack)
-            const playerDmg = Math.max(1, gameState.baseAttack - Math.floor(gameState.currentMonster.currentATK * 0.1)); // Monster DEF is 10% ATK
-            gameState.currentMonster.currentHP -= playerDmg;
-            logToConsole(`•Bạn tấn công ${gameState.currentMonster.name}, gây ${playerDmg.toFixed(0)} sát thương.`);
+        window.stopCombat = function() {
+            if (combatInterval) clearInterval(combatInterval);
+            combatInterval = null;
+            gameState.currentMonster = null;
+        }
 
-            if (gameState.currentMonster.currentHP <= 0) {
-                handleMonsterDefeated(gameState.currentMonster);
-                endCombat();
-                return;
-            }
+        function gameCombatTick() {
+            if (!gameState.currentMonster) return;
 
-            // Monster Attack
-            const monsterDmg = Math.max(1, gameState.currentMonster.currentATK - gameState.baseDefense);
-            gameState.currentHP -= monsterDmg;
-            logToConsole(`X${gameState.currentMonster.name} phản công, bạn chịu ${monsterDmg.toFixed(0)} sát thương.`);
+            // Monster attack
+            const monster = gameState.currentMonster;
+            let monsterDamage = Math.max(1, monster.attack - gameState.totalDefense);
+            gameState.currentHP = Math.max(0, gameState.currentHP - monsterDamage);
+
+            // Player attack (Auto attack)
+            const playerDamage = Math.max(1, gameState.totalAttack - monster.attack * 0.2); // Player damage ignores most monster defense
+            monster.currentHp = Math.max(0, monster.currentHp - playerDamage);
+
+            logToConsole(`XQuái vật gây **${monsterDamage}** sát thương. Bạn gây **${playerDamage}** sát thương.`);
 
             if (gameState.currentHP <= 0) {
-                handlePlayerDefeated();
-                endCombat();
-                return;
+                window.handleCombatLoss(monster);
+            } else if (monster.currentHp <= 0) {
+                window.handleCombatWin(monster);
             }
 
             updateUI();
         }
+        
+        window.handleActionSkill = function(skill) {
+             if (gameState.currentView !== 'Combat' || !gameState.currentMonster) {
+                 return logToConsole("XBạn không đang chiến đấu.");
+             }
+             if (gameState.currentMP < skill.mpCost) {
+                 return logToConsole(`XKhông đủ Linh Khí (MP) để thi triển **${skill.name}** (Cần ${skill.mpCost}).`);
+             }
+             
+             gameState.currentMP -= skill.mpCost;
+             
+             // Gây sát thương kỹ năng (VD: 1.5x Tấn Công)
+             const skillDamage = Math.max(1, (gameState.totalAttack * skill.damageMultiplier) - gameState.currentMonster.attack * 0.2);
+             gameState.currentMonster.currentHp = Math.max(0, gameState.currentMonster.currentHp - skillDamage);
+             
+             logToConsole(`!Bạn thi triển **${skill.name}**, gây **${skillDamage.toFixed(0)}** sát thương cực mạnh!`);
+             
+             if (gameState.currentMonster.currentHp <= 0) {
+                 window.handleCombatWin(gameState.currentMonster);
+             }
+             updateUI();
+        }
 
-        function endCombat() {
-            if (combatInterval) clearInterval(combatInterval);
-            gameState.currentMonster = null;
-            renderView('Combat'); // Re-render to show Hunting buttons
+        window.handleCombatWin = function(monster) {
+            window.stopCombat();
+            
+            // Dungeon clear rewards
+            if (gameState.currentCombatMode === 'Dungeon') {
+                 logToConsole(`§PHÓ BẢN: Bạn đã đánh bại Boss **${monster.name}**!`);
+                 gameState.experience += monster.exp;
+                 gameState.spiritStone += monster.reward;
+                 logToConsole(`•Nhận: **${monster.exp} Tu Vi** và **${monster.reward.toLocaleString()} Linh Thạch**!`);
+                 
+                 // Dungeon Loot
+                 for (const [lootName, dropChance] of Object.entries(monster.loot)) {
+                     if (Math.random() < dropChance) {
+                         const amount = Math.floor(Math.random() * 3) + 1;
+                         gameState.inventory[lootName] = (gameState.inventory[lootName] || 0) + amount;
+                         logToConsole(`•Chiến lợi phẩm: **${lootName} x${amount}**!`);
+                     }
+                 }
+                 gameState.currentCombatMode = 'Wilderness'; // Reset mode after dungeon clear
+            } else {
+                 // Wilderness monster loot
+                 logToConsole(`§CHIẾN THẮNG: Bạn đã đánh bại **${monster.name}**!`);
+                 gameState.experience += monster.exp;
+                 gameState.spiritStone += Math.floor(Math.random() * 20) + 10; // Base money loot
+                 logToConsole(`•Nhận: **${monster.exp} Tu Vi**.`);
+            
+                 for (const [lootName, dropChance] of Object.entries(monster.loot)) {
+                     if (Math.random() < dropChance) {
+                         const amount = 1;
+                         gameState.inventory[lootName] = (gameState.inventory[lootName] || 0) + amount;
+                         logToConsole(`•Chiến lợi phẩm: **${lootName} x${amount}**!`);
+                     }
+                 }
+            }
+
+            checkLevelUp();
+            updateUI();
+            renderView('Combat'); // Re-render the combat view to show buttons again
+            window.saveGame(gameState);
+        }
+
+        window.handleCombatLoss = function(monster) {
+            window.stopCombat();
+            
+            if (gameState.currentCombatMode === 'Dungeon') {
+                logToConsole(`XTHẤT BẠI: Bạn đã bị đánh bại trong Phó Bản **${monster.name}**. Mất 20% Linh Thạch!`);
+                gameState.spiritStone = Math.floor(gameState.spiritStone * 0.8);
+            } else {
+                logToConsole(`XTHẤT BẠI: Bạn đã bị đánh bại bởi **${monster.name}**. Mất 10% Linh Thạch!`);
+                gameState.spiritStone = Math.floor(gameState.spiritStone * 0.9);
+            }
+            
+            gameState.currentHP = 1; // Hồi sinh với 1 HP
+            gameState.currentMP = 1; // Hồi sinh với 1 MP
+            
+            updateUI();
+            renderView('Combat'); // Re-render the combat view
+            window.saveGame(gameState);
+        }
+        
+        window.handleActionToggleAutoCombat = function() {
+            if (gameState.currentCombatMode === 'Dungeon') {
+                 return logToConsole("XKhông thể Tự Động Chiến Đấu trong Phó Bản. Chỉ được phép trong khu vực Hoang Dã.");
+            }
+            
+            const button = document.getElementById('start-auto-combat-button');
+            const monster = MONSTERS[0]; // Mặc định đánh quái đầu tiên
+            
+            if (button.textContent === 'BẬT TỰ ĐỘNG CHIẾN ĐẤU') {
+                button.textContent = 'DỪNG TỰ ĐỘNG';
+                window.logToConsole("•Bật chế độ Tự Động Chiến Đấu.");
+                window.handleStartCombat(monster.id, 'Wilderness');
+            } else {
+                button.textContent = 'BẬT TỰ ĐỘNG CHIẾN ĐẤU';
+                window.logToConsole("•Dừng chế độ Tự Động Chiến Đấu.");
+                window.stopCombat();
+                gameState.currentMonster = null;
+                renderView('Combat');
+            }
+        }
+        
+        // --- NPC COMBAT LOGIC ---
+        
+        window.handleStartNPCCombat = function(npcId) {
+            window.stopCombat();
+            
+            const npcData = MOCK_NPCS.find(n => n.id === npcId);
+            if (!npcData || !npcData.isChallengable) {
+                return logToConsole("XNPC này không thể thách đấu.");
+            }
+            
+            const npcRealmIndex = REALMS.findIndex(r => r.name === npcData.realm);
+            
+            if (gameState.realmIndex < npcRealmIndex) {
+                 return logToConsole(`XBạn không đủ cảnh giới để thách đấu ${npcData.name} (**${npcData.realm}**).`);
+            }
+            
+            // Stop Tuo Xian loop if running
+            if (tuXianInterval) clearInterval(tuXianInterval);
+            tuXianInterval = null;
+            
+            // Set up NPC combat state
+            gameState.currentNPCCombat = {
+                ...npcData,
+                currentHp: npcData.baseHp,
+                maxHp: npcData.baseHp,
+                attack: npcData.baseAtk,
+                defense: npcData.baseDef
+            };
+            selectedNPC = npcData; // Lưu NPC đang chiến đấu
+            
+            logToConsole(`§Bắt đầu thách đấu **${npcData.name}**!`);
+            npcCombatInterval = setInterval(gameNPCCombatTick, GAME_TICK_INTERVAL);
+            switchView('NPC'); // Switch to NPC view to see combat
+            updateUI();
+        }
+        
+        window.stopNPCCombat = function() {
+            if (npcCombatInterval) clearInterval(npcCombatInterval);
+            npcCombatInterval = null;
+            gameState.currentNPCCombat = null;
+            selectedNPC = null;
+            startTuoXianLoop(); // Resume Tọa Thiền
+        }
+        
+        function gameNPCCombatTick() {
+            if (!gameState.currentNPCCombat) return;
+            
+            const npc = gameState.currentNPCCombat;
+            
+            // NPC attack
+            let npcDamage = Math.max(1, npc.attack - gameState.totalDefense);
+            gameState.currentHP = Math.max(0, gameState.currentHP - npcDamage);
+            
+            // Player attack
+            let playerDamage = Math.max(1, gameState.totalAttack - npc.defense);
+            npc.currentHp = Math.max(0, npc.currentHp - playerDamage);
+            
+            logToConsole(`X**${npc.name}** gây **${npcDamage}** sát thương. Bạn gây **${playerDamage}** sát thương.`);
+
+            if (gameState.currentHP <= 0) {
+                window.handleNPCCombatLoss(npc);
+            } else if (npc.currentHp <= 0) {
+                window.handleNPCCombatWin(npc);
+            }
+
+            updateUI();
+        }
+        
+        window.handleNPCCombatWin = function(npc) {
+            window.stopNPCCombat();
+            
+            logToConsole(`§KHÍ PHÁCH: Bạn đã đánh bại **${npc.name}**!`);
+            
+            gameState.spiritStone += npc.reward;
+            logToConsole(`•Nhận thưởng: **${npc.reward.toLocaleString()} Linh Thạch**!`);
+            
+            // NPC Loot
+            if (npc.loot) {
+                 for (const [lootName, dropChance] of Object.entries(npc.loot)) {
+                     if (Math.random() < dropChance) {
+                         const amount = 1;
+                         gameState.inventory[lootName] = (gameState.inventory[lootName] || 0) + amount;
+                         logToConsole(`•Chiến lợi phẩm HIẾM: **${lootName} x${amount}**!`);
+                     }
+                 }
+            }
+            
+            updateUI();
+            renderView('NPC');
+            window.saveGame(gameState);
+        }
+
+        window.handleNPCCombatLoss = function(npc) {
+            window.stopNPCCombat();
+            
+            logToConsole(`XTHẤT BẠI: Bạn đã bị **${npc.name}** đánh bại. Mất 10% Linh Thạch!`);
+            gameState.spiritStone = Math.floor(gameState.spiritStone * 0.9);
+            
+            gameState.currentHP = 1; // Hồi sinh với 1 HP
+            gameState.currentMP = 1; // Hồi sinh với 1 MP
+            
+            updateUI();
+            renderView('NPC');
+            window.saveGame(gameState);
+        }
+
+
+        // --- TRADE & SHOP LOGIC ---
+        
+        function generateDailySpecialItem() {
+            // Pick a random item from SPECIAL_ITEMS
+            const randomIndex = Math.floor(Math.random() * SPECIAL_ITEMS.length);
+            gameState.dailyItem = SPECIAL_ITEMS[randomIndex];
+            logToConsole(`•THƯƠNG HỘI: Vật phẩm đặc biệt hôm nay: **${gameState.dailyItem.name}**!`);
+        }
+
+        function initializeAuction() {
+             logToConsole("!ĐẤU GIÁ HỘI: Đấu Giá Hội hàng tháng đã bắt đầu!");
+             
+             // 1. Chọn 1 vật phẩm đấu giá ngẫu nhiên
+             const randomIndex = Math.floor(Math.random() * AUCTION_ITEMS.length);
+             const item = AUCTION_ITEMS[randomIndex];
+             
+             // 2. Thiết lập giá cơ bản (BasePrice) và người đặt giá ban đầu
+             gameState.auctionItem = item;
+             gameState.auctionPrice = item.basePrice;
+             gameState.auctionBidder = 'Hội Đồng Định Giá'; // Người giữ giá ban đầu
+             gameState.lastAuctionDay = gameState.currentDay;
+             
+             logToConsole(`!ĐẤU GIÁ: Bảo vật hôm nay là **${item.name}**! Giá khởi điểm: **${item.basePrice.toLocaleString()} LT**.`);
+        }
+        
+        window.handleBid = function(item, currentPrice) {
+            if (!item) {
+                 return logToConsole("XĐấu Giá Hội chưa mở hoặc vật phẩm không hợp lệ.");
+            }
+            
+            // Tăng giá đấu: Giá hiện tại + 10%
+            const bidIncrement = Math.max(1000, Math.floor(currentPrice * 0.1));
+            const newBid = currentPrice + bidIncrement;
+            
+            if (gameState.spiritStone < newBid) {
+                 return logToConsole(`XBạn không đủ Linh Thạch để đấu giá **${newBid.toLocaleString()} LT**.`);
+            }
+            
+            // Xử lý logic đặt giá của NPC: Tỷ lệ NPC đấu giá lại
+            // Tỷ lệ thành công dựa trên tổng Linh Thạch của người chơi
+            const playerWealthBonus = gameState.spiritStone / 500000; // Càng giàu càng dễ thắng
+            const npcBidChance = Math.max(0.05, 0.4 - playerWealthBonus); // Cơ hội NPC đấu lại từ 40% giảm dần
+
+            // Giả định NPC đặt giá
+            let npcWins = false;
+            let finalPrice = newBid;
+            let finalBidder = 'Bạn';
+            
+            // 2 vòng đặt giá ảo của NPC
+            if (Math.random() < npcBidChance) {
+                 finalPrice += bidIncrement;
+                 finalBidder = 'NPC Đấu Giá Giấu Tên';
+                 npcWins = true;
+            }
+            
+            if (Math.random() < npcBidChance / 2 && npcWins) {
+                 finalPrice += bidIncrement;
+                 finalBidder = 'NPC Đấu Giá Giấu Tên';
+            }
+            
+            // Cập nhật giá và người đấu giá cao nhất (Vòng 1: người chơi đặt giá)
+            gameState.auctionPrice = newBid;
+            gameState.auctionBidder = 'Bạn';
+            
+            // Cập nhật giá nếu NPC đấu lại
+            if (npcWins) {
+                 gameState.auctionPrice = finalPrice;
+                 gameState.auctionBidder = finalBidder;
+                 logToConsole(`!ĐẤU GIÁ: **${finalBidder}** đã vượt giá của bạn lên **${finalPrice.toLocaleString()} LT**!`);
+                 // Nếu NPC thắng, người chơi không mất tiền
+                 
+            } else {
+                 // Người chơi thắng
+                 gameState.spiritStone -= newBid;
+                 logToConsole(`•ĐẤU GIÁ: Bạn đặt giá thành công **${newBid.toLocaleString()} LT** và là người đặt giá cao nhất!`);
+                 // Kích hoạt nút MUA
+            }
+            
+            renderView('Trade');
+        }
+        
+        window.handleBuyAuctionItem = function(item, price) {
+            if (gameState.auctionBidder !== 'Bạn') {
+                 return logToConsole("XBạn không phải là người đặt giá cao nhất. Không thể mua.");
+            }
+            
+            // Người chơi đã bị trừ tiền trong hàm handleBid, nên chỉ cần lấy item và reset
+            
+            logToConsole(`§MUA THÀNH CÔNG: Bạn đã mua **${item.name}** với giá **${price.toLocaleString()} LT**!`);
+            
+            // Xử lý vật phẩm (Tương tự buyItem)
+            switch (item.type) {
+                 case 'bone_change':
+                     handleStatChange('bone');
+                     break;
+                 case 'root_change':
+                     handleStatChange('root');
+                     break;
+                 case 'atk_mega':
+                     gameState.baseAttack += item.bonus;
+                     logToConsole(`•Nhận vĩnh viễn **+${item.bonus} Tấn Công**!`);
+                     break;
+            }
+            
+            // Reset Auction State
+            gameState.auctionItem = null;
+            gameState.auctionPrice = 0;
+            gameState.auctionBidder = null;
+            
+            calculateStats();
+            updateUI();
+            renderView('Trade');
+            window.saveGame(gameState);
+        }
+
+        window.buyItem = function(item) {
+            if (gameState.spiritStone < item.price) {
+                logToConsole(`XKhông đủ Linh Thạch! Cần ${item.price.toLocaleString()} LT.`);
+                return;
+            }
+
+            gameState.spiritStone -= item.price;
+            logToConsole(`•Bạn đã mua **${item.name}** với giá **${item.price.toLocaleString()} LT**.`);
+
+            switch (item.type) {
+                case 'exp':
+                    gameState.experience += item.bonus;
+                    logToConsole(`•Nhận **+${item.bonus} Tu Vi**.`);
+                    checkLevelUp();
+                    break;
+                case 'def':
+                    gameState.baseDefense += item.bonus;
+                    logToConsole(`•Nhận vĩnh viễn **+${item.bonus} Phòng Thủ**.`);
+                    break;
+                case 'breakthrough':
+                    gameState.inventory['Trúc Cơ Đan'] = (gameState.inventory['Trúc Cơ Đan'] || 0) + item.bonus;
+                    logToConsole(`•Nhận **+${item.bonus} Trúc Cơ Đan**.`);
+                    break;
+                case 'mp':
+                    gameState.currentMP = Math.min(gameState.maxMP, gameState.currentMP + item.bonus);
+                    logToConsole(`•Hồi phục **+${item.bonus} Linh Khí**.`);
+                    break;
+                case 'hp':
+                    // Tăng HP Tối Đa vĩnh viễn (0.5% * số cấp)
+                    gameState.maxHP *= (1 + item.bonus / 100);
+                    gameState.currentHP *= (1 + item.bonus / 100);
+                    logToConsole(`•Tăng **${(item.bonus * 100).toFixed(1)}% Max HP** vĩnh viễn.`);
+                    calculateStats(); // Recalculate based on new maxHP
+                    break;
+                case 'atk':
+                    gameState.baseAttack += item.bonus;
+                    logToConsole(`•Nhận vĩnh viễn **+${item.bonus} Tấn Công**.`);
+                    break;
+            }
+
+            calculateStats();
+            updateUI();
+            renderView('Trade');
+            window.saveGame(gameState);
+        }
+        
+        function handleStatChange(type) {
+            let statList, statNameKey, statValueKey, oldStat, newStat;
+            let logType;
+            
+            if (type === 'bone') {
+                statList = BONE_QUALITIES;
+                statNameKey = 'boneQualityName';
+                statValueKey = 'boneQuality';
+                oldStat = gameState.boneQualityName;
+                logType = "Căn Cốt";
+            } else if (type === 'root') {
+                statList = SPIRIT_ROOTS;
+                statNameKey = 'spiritRootName';
+                statValueKey = 'spiritRoot';
+                oldStat = gameState.spiritRootName;
+                logType = "Linh Căn";
+            } else {
+                return;
+            }
+            
+            // Loại bỏ các chỉ số cấp thấp hơn chỉ số hiện tại để đảm bảo nâng cấp (tăng tỷ lệ thành công)
+            const oldIndex = statList.findIndex(s => s.name === oldStat);
+            const upgradeList = statList.slice(oldIndex + 1);
+            
+            if (upgradeList.length === 0) {
+                 logToConsole(`•**${logType}** của bạn đã đạt cảnh giới tối cao (${oldStat}).`);
+                 return;
+            }
+            
+            // Chỉ định rarity cho các chỉ số nâng cấp
+            const totalRarity = upgradeList.reduce((sum, s) => sum + s.rarity, 0);
+            
+            // Cơ hội thất bại (nếu thất bại thì giữ nguyên chỉ số hiện tại)
+            if (Math.random() < 0.25) { // 25% fail chance even with pills
+                 logToConsole(`X**${logType}** cải tạo thất bại. May mắn giữ nguyên phẩm chất. Tồn kho thuốc còn: ${gameState.inventory['Cải Cốt Đan'] || gameState.inventory['Tẩy Tủy Đan']}.`);
+                 return;
+            }
+
+            // Chọn chỉ số mới (đảm bảo nó là cấp cao hơn)
+            newStat = pickRandomStat(upgradeList);
+            
+            gameState[statNameKey] = newStat.name;
+            gameState[statValueKey] = newStat.multiplier;
+            
+            logToConsole(`!CẢI TẠO THÀNH CÔNG: **${logType}** của bạn đã thăng lên **${newStat.name}**!`);
+            
+            calculateStats();
             updateUI();
             window.saveGame(gameState);
         }
 
-        function handleMonsterDefeated(monster) {
-            const expGain = monster.exp;
-            gameState.experience += expGain;
-            gameState.spiritStone += 50; // Base money drop
+        window.sellLoot = function(itemName, amount = 1) {
+             if (!gameState.inventory[itemName] || gameState.inventory[itemName] < amount) {
+                 logToConsole(`XKhông đủ ${itemName} để bán.`);
+                 return;
+             }
+             
+             const price = LOOT_PRICES[itemName]?.price || 0;
+             const totalSale = price * amount;
+             
+             gameState.inventory[itemName] -= amount;
+             gameState.spiritStone += totalSale;
+             
+             logToConsole(`•Đã bán **${itemName} x${amount}** thu về **${totalSale.toLocaleString()} LT**.`);
+             
+             updateUI();
+             renderView('Trade');
+             window.saveGame(gameState);
+        }
 
-            logToConsole(`§CHIẾN THẮNG! Hạ gục ${monster.name}, nhận ${expGain.toLocaleString()} Tu Vi và 50 Linh Thạch.`);
+
+        // --- SECT & CULTIVATION METHOD LOGIC (MỚI) ---
+        
+        window.handleJoinSect = function(sect) {
+            const requiredRealmIndex = sect.requirement;
             
-            // Handle Loot Drop
-            for (const [item, rate] of Object.entries(monster.loot)) {
-                if (Math.random() < rate) {
-                    gameState.inventory[item] = (gameState.inventory[item] || 0) + 1;
-                    logToConsole(`•Nhận được vật phẩm: **${item}**.`);
-                }
+            if (gameState.sectName) {
+                 return logToConsole(`XBạn đã là đệ tử của **${gameState.sectName}**. Không thể gia nhập tông môn khác.`);
+            }
+            
+            if (gameState.realmIndex < requiredRealmIndex) {
+                 return logToConsole(`XBạn không đủ cảnh giới để gia nhập **${sect.name}** (Yêu cầu: **${REALMS[requiredRealmIndex].name}** trở lên).`);
+            }
+            
+            gameState.sectName = sect.name;
+            gameState.sectBenefits = { expBonus: sect.expBonus, defBonus: sect.defBonus };
+            gameState.sectContribution = 0;
+            gameState.sectRank = 'Phổ Thông Đệ Tử';
+            
+            logToConsole(`§Chúc mừng! Bạn đã gia nhập **${sect.name}**!`);
+            calculateStats();
+            updateUI();
+            renderView('Sect');
+            window.saveGame(gameState);
+        }
+        
+        window.handleContribute = function() {
+            if (!gameState.sectName) {
+                 return logToConsole("XBạn chưa gia nhập Tông Môn.");
+            }
+            
+            const contributionCost = 1000;
+            const contributionGain = 100;
+            
+            if (gameState.spiritStone < contributionCost) {
+                 return logToConsole(`XKhông đủ Linh Thạch để cống hiến (Cần ${contributionCost.toLocaleString()} LT).`);
+            }
+            
+            gameState.spiritStone -= contributionCost;
+            gameState.sectContribution += contributionGain;
+            
+            logToConsole(`•Cống hiến thành công! Nhận **+${contributionGain} Cống Hiến**.`);
+            
+            // Check Rank Up
+            if (gameState.sectContribution >= 10000 && gameState.sectRank === 'Phổ Thông Đệ Tử') {
+                 gameState.sectRank = 'Nội Môn Đệ Tử';
+                 logToConsole(`!CHÚC MỪNG: Bạn được thăng lên **Nội Môn Đệ Tử**!`);
+            } else if (gameState.sectContribution >= 50000 && gameState.sectRank === 'Nội Môn Đệ Tử') {
+                 gameState.sectRank = 'Chân Truyền Đệ Tử';
+                 logToConsole(`!CHÚC MỪNG: Bạn được thăng lên **Chân Truyền Đệ Tử**!`);
+            }
+            
+            updateUI();
+            renderView('Sect');
+            window.saveGame(gameState);
+        }
+        
+        // HÀM MỚI: Học Công Pháp (Tàng Kinh Các)
+        window.learnCultivationMethod = function(method) {
+            // Check if already learned or equipped
+            if (gameState.learnedMethods.includes(method.name)) {
+                 return logToConsole(`XBạn đã học công pháp **${method.name}** rồi.`);
+            }
+            
+            // Check Tông Môn Requirement (Only for Sect Skills)
+            if (method.isSectSkill) {
+                 if (!gameState.sectName) {
+                     return logToConsole("XĐây là công pháp Tông Môn, bạn cần gia nhập Tông Môn.");
+                 }
+                 if (gameState.sectContribution < method.sectContribution) {
+                     return logToConsole(`XKhông đủ Cống Hiến Tông Môn (Cần ${method.sectContribution.toLocaleString()}).`);
+                 }
+            } else {
+                 // Check Money for general methods
+                 if (gameState.spiritStone < method.cost) {
+                     return logToConsole(`XKhông đủ Linh Thạch (Cần ${method.cost.toLocaleString()} LT).`);
+                 }
+            }
+            
+            // Deduct Cost
+            if (method.isSectSkill) {
+                 gameState.sectContribution -= method.sectContribution;
+                 logToConsole(`•Mất **${method.sectContribution.toLocaleString()} Cống Hiến** để học.`);
+            } else {
+                 gameState.spiritStone -= method.cost;
+                 logToConsole(`•Mất **${method.cost.toLocaleString()} Linh Thạch** để học.`);
+            }
+            
+            // Learn & Equip
+            gameState.learnedMethods.push(method.name);
+            window.equipCultivationMethod(method);
+            
+            logToConsole(`§Học thành công **${method.name}** và đã tự động trang bị.`);
+            updateUI();
+            renderView('Sect');
+            window.saveGame(gameState);
+        }
+        
+        // HÀM MỚI: Trang bị Công Pháp
+        window.equipCultivationMethod = function(method) {
+            if (!gameState.learnedMethods.includes(method.name)) {
+                 return logToConsole(`XBạn chưa học công pháp **${method.name}**.`);
+            }
+            
+            gameState.cultivationMethod = method;
+            gameState.cultivationMethodName = method.name;
+            
+            logToConsole(`•Trang bị thành công công pháp **${method.name}**.`);
+            calculateStats();
+            updateUI();
+            renderView('Sect');
+            window.saveGame(gameState);
+        }
+
+
+        // --- UI & RENDER FUNCTIONS ---
+
+        function updateUI() {
+            // Cập nhật Cảnh Giới
+            const currentRealm = REALMS[gameState.realmIndex];
+            document.getElementById('stat-realm').textContent = currentRealm.name;
+            document.getElementById('stat-realm').className = `${currentRealm.color} font-bold`;
+
+            // Cập nhật Linh Thạch
+            document.getElementById('stat-money').textContent = gameState.spiritStone.toLocaleString();
+
+            // Cập nhật Công Pháp
+            document.getElementById('stat-cultivation-method').textContent = gameState.cultivationMethodName || "Chưa có";
+            
+            // Cập nhật Căn Cốt/Linh Căn
+            document.getElementById('stat-bone').textContent = gameState.boneQualityName;
+            document.getElementById('stat-spirit-root').textContent = gameState.spiritRootName;
+
+            // Cập nhật Chỉ số Chiến đấu
+            document.getElementById('stat-attack').textContent = gameState.totalAttack.toLocaleString();
+            document.getElementById('stat-defense').textContent = gameState.totalDefense.toLocaleString();
+
+            // Cập nhật HP
+            const hpPercent = (gameState.currentHP / gameState.maxHP) * 100;
+            document.getElementById('stat-hp').textContent = `${gameState.currentHP.toFixed(0)}/${gameState.maxHP.toFixed(0)}`;
+            document.getElementById('hp-progress').style.width = `${hpPercent.toFixed(0)}%`;
+            
+            // Cập nhật MP
+            const mpPercent = (gameState.currentMP / gameState.maxMP) * 100;
+            document.getElementById('stat-mp').textContent = `${gameState.currentMP.toFixed(0)}/${gameState.maxMP.toFixed(0)}`;
+            document.getElementById('mp-progress').style.width = `${mpPercent.toFixed(0)}%`;
+
+            // Cập nhật EXP
+            const expToNext = currentRealm.maxExp;
+            const expPercent = (gameState.experience / expToNext) * 100;
+            document.getElementById('stat-exp').textContent = `${gameState.experience.toLocaleString()} / ${expToNext.toLocaleString()}`;
+            document.getElementById('exp-progress').style.width = `${expPercent.toFixed(0)}%`;
+            
+            // Cập nhật Tông Môn
+            if (gameState.sectName) {
+                 document.getElementById('sect-info').innerHTML = `
+                      <p class="text-sm text-green-400">Tông Môn: **${gameState.sectName}**</p>
+                      <p class="text-sm text-blue-400">Thân phận: **${gameState.sectRank}**</p>
+                      <p class="text-sm text-orange-400">Cống Hiến: **${gameState.sectContribution.toLocaleString()}**</p>
+                 `;
+            } else {
+                 document.getElementById('sect-info').innerHTML = `<p class="text-sm text-red-400">Chưa gia nhập Tông Môn</p>`;
+            }
+        }
+
+        window.switchView = function(viewName) {
+            gameState.currentView = viewName;
+            
+            // Update Tab Active State
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                 btn.classList.remove('active');
+            });
+            document.getElementById(`tab-${viewName}`).classList.add('active');
+            
+            // Manage Game Loops
+            if (viewName === 'TuoXian') {
+                 if (combatInterval) clearInterval(combatInterval);
+                 if (npcCombatInterval) clearInterval(npcCombatInterval);
+                 combatInterval = null;
+                 npcCombatInterval = null;
+                 startTuoXianLoop();
+                 gameState.currentMonster = null; // Clear combat state
+                 gameState.currentNPCCombat = null;
+            } else if (viewName === 'Combat' || viewName === 'NPC') {
+                 if (tuXianInterval) clearInterval(tuXianInterval);
+                 tuXianInterval = null;
+                 // Combat/NPC loops are started by action functions (handleStartCombat/handleStartNPCCombat)
+            } else {
+                 if (combatInterval) clearInterval(combatInterval);
+                 if (npcCombatInterval) clearInterval(npcCombatInterval);
+                 combatInterval = null;
+                 npcCombatInterval = null;
+                 startTuoXianLoop(); // Resume TuoXian in non-combat tabs
+                 gameState.currentMonster = null;
+                 gameState.currentNPCCombat = null;
             }
 
-            checkExpCap();
+            // Render Content
+            renderView(viewName);
+            updateUI();
         }
 
-        function handlePlayerDefeated() {
-            logToConsole("XTHẤT BẠI: Bạn đã gục ngã. Trở về tông môn để hồi phục.");
-            gameState.currentHP = 1; // Always leave 1 HP
-            gameState.spiritStone = Math.max(0, gameState.spiritStone - 100); // Small penalty
-            gameState.experience = Math.floor(gameState.experience * 0.95); // Lose 5% exp
-        }
-
-        // --- TRADE & INVENTORY VIEWS ---
-
-        window.renderInventoryView = function() {
-            let inventoryHTML = `
-                <h3 class="text-2xl text-center mb-4 text-green-400 border-b border-gray-600 pb-2">TÚI TRỮ VẬT (INVENTORY)</h3>
-                <div class="space-y-4">
-            `;
-            const inventoryItems = Object.keys(gameState.inventory).filter(key => gameState.inventory[key] > 0);
-            const commonItems = inventoryItems.filter(key => LOOT_PRICES[key]?.type === 'common');
-            const rareItems = inventoryItems.filter(key => LOOT_PRICES[key]?.type !== 'common');
-
-            let sellLootHTML = commonItems.map(itemName => `
-                <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
-                    <p class="text-xl">${itemName}: <span class="text-yellow-300">${gameState.inventory[itemName]}x</span></p>
-                    <div class="flex space-x-2">
-                         <button class="game-button text-xs p-1" onclick="sellLoot('${itemName}', 1)">Bán Nhanh (${(LOOT_PRICES[itemName]?.price || 0).toLocaleString()} LT)</button>
+        function renderView(viewName) {
+            const contentDiv = document.getElementById('main-content');
+            
+            // --- Tọa Thiền View ---
+            if (viewName === 'TuoXian') {
+                let expRate = (10 * gameState.expMultiplier).toFixed(0);
+                contentDiv.innerHTML = `
+                    <h2 class="text-3xl text-center text-green-300 mb-4">KHU VỰC TỌA THIỀN</h2>
+                    <div class="pixel-card bg-gray-600 p-4 text-center">
+                        <p class="text-xl">Đang Tọa Thiền...</p>
+                        <p class="text-lg text-yellow-300 mt-2">Tốc độ tu luyện: **${expRate} Tu Vi/giây**</p>
+                        ${gameState.cultivationMethodName ? 
+                           `<p class="text-sm text-blue-300">Công Pháp: **${gameState.cultivationMethodName}** (x${gameState.cultivationMethod.bonus.expMultiplier})</p>` :
+                           `<p class="text-sm text-red-400 font-bold">KHÔNG CÔNG PHÁP! Tốc độ x1.0</p>`
+                        }
                     </div>
-                </div>
-            `).join('');
+                    <div class="mt-6 text-center">
+                         <h3 class="text-2xl text-yellow-300 mb-3">TÚI TRỮ VẬT</h3>
+                         <div class="pixel-card bg-gray-600 p-4">
+                              ${Object.keys(gameState.inventory).filter(key => gameState.inventory[key] > 0).length > 0 ? 
+                                   Object.keys(gameState.inventory).filter(key => gameState.inventory[key] > 0).map(key => 
+                                   `<p class="text-lg flex justify-between">${key}: <span class="text-orange-300">${gameState.inventory[key]}x</span></p>`
+                                   ).join('') :
+                                   `<p class="text-lg text-gray-400">Túi trữ vật trống.</p>`
+                              }
+                         </div>
+                    </div>
+                `;
+            
+            // --- Combat View ---
+            } else if (viewName === 'Combat') {
+                if (gameState.currentMonster) {
+                    // In Combat Screen (Wilderness/Dungeon)
+                    const monster = gameState.currentMonster;
+                    const hpPercent = (monster.currentHp / monster.maxHp) * 100;
+                    
+                    contentDiv.innerHTML = `
+                        <h2 class="text-3xl text-center text-red-400 mb-4">${gameState.currentCombatMode === 'Dungeon' ? 'ĐÁNH BOSS PHÓ BẢN' : 'CHIẾN ĐẤU HOANG DÃ'}</h2>
+                        
+                        <div class="pixel-card bg-red-800 border-red-500 p-4 mb-4">
+                            <h3 class="text-2xl text-yellow-300">${monster.name}</h3>
+                            <p class="text-lg text-red-300">HP: ${monster.currentHp.toFixed(0)}/${monster.maxHp.toFixed(0)}</p>
+                            <div class="progress-bar-monster-hp mt-1">
+                                <div class="progress-fill-monster-hp" style="width: ${hpPercent.toFixed(0)}%"></div>
+                            </div>
+                            <p class="text-lg text-red-300 mt-2">Tấn Công: ${monster.attack.toLocaleString()}</p>
+                        </div>
+                        
+                        <h3 class="text-2xl text-yellow-300 mt-4 mb-2 text-center">HÀNH ĐỘNG</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            ${SKILLS.map(skill => `
+                                <button class="game-button p-2 text-base" onclick="handleActionSkill(${JSON.stringify(skill).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})"
+                                        ${gameState.currentMP < skill.mpCost ? 'disabled' : ''}>
+                                    ${skill.name} (${skill.mpCost} MP)
+                                </button>
+                            `).join('')}
+                        </div>
+                        <button class="game-button p-2 text-base w-full mt-4 bg-red-600 border-red-300 hover:bg-red-700" onclick="switchView('TuoXian')">CHẠY TRỐN (Tọa Thiền)</button>
+                    `;
+                } else {
+                    // Out of Combat Screen (Wilderness/Dungeon selection)
+                    const autoCombatButtonText = combatInterval ? 'DỪNG TỰ ĐỘNG' : 'BẬT TỰ ĐỘNG CHIẾN ĐẤU';
+                    contentDiv.innerHTML = `
+                        <h2 class="text-3xl text-center text-red-400 mb-4">CHIẾN ĐẤU HOANG DÃ</h2>
+                        <div class="flex justify-center mb-6">
+                            <button id="start-auto-combat-button" class="game-button p-3 text-lg bg-indigo-600 border-indigo-300 hover:bg-indigo-700" 
+                                    onclick="handleActionToggleAutoCombat()">
+                                ${autoCombatButtonText}
+                            </button>
+                        </div>
+                        
+                        <h3 class="text-2xl text-yellow-300">Quái Vật Khu Vực</h3>
+                        <div class="grid grid-cols-2 gap-4 mt-2">
+                            ${MONSTERS.map(monster => `
+                                <div class="pixel-card bg-gray-600 p-3 flex justify-between items-center">
+                                    <div>
+                                        <p class="text-lg text-red-300">${monster.name}</p>
+                                        <p class="text-xs text-gray-400">Yêu cầu: ${monster.requiredRealm}</p>
+                                    </div>
+                                    <button class="game-button text-xs p-1" 
+                                            onclick="handleStartCombat(${monster.id}, 'Wilderness')"
+                                            ${gameState.realmIndex < monster.minRealm ? 'disabled' : ''}>
+                                        CHIẾN ĐẤU
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <h2 class="text-3xl text-center text-purple-400 mt-6 mb-4">PHÓ BẢN (DUGEON)</h2>
+                         <div class="grid grid-cols-2 gap-4 mt-2">
+                             ${DUNGEONS.map(dungeon => `
+                                 <div class="pixel-card bg-purple-800 border-purple-500 p-3 flex justify-between items-center">
+                                     <div>
+                                         <p class="text-lg text-purple-300">${dungeon.name}</p>
+                                         <p class="text-xs text-gray-400">Yêu cầu: ${dungeon.requiredRealm}</p>
+                                     </div>
+                                     <button class="game-button text-xs p-1" 
+                                             onclick="handleStartCombat(null, 'Dungeon', '${dungeon.id}')"
+                                             ${gameState.realmIndex < dungeon.realmIndex ? 'disabled' : ''}>
+                                         TIẾN VÀO
+                                     </button>
+                                 </div>
+                             `).join('')}
+                         </div>
+                    `;
+                }
 
-            inventoryHTML += `
-                <div class="pixel-card bg-gray-800 p-3">
-                    <p class="text-xl mb-2 text-yellow-300">Công Pháp Đã Học:</p>
-                    <p class="text-lg text-green-400">${gameState.knownCultivationMethods.join(', ') || 'Chưa có công pháp.'}</p>
-                </div>
-                ${inventoryItems.length > 0 ? `
-                    <h4 class="text-xl text-yellow-300 border-b border-gray-600">VẬT PHẨM THU HOẠCH</h4>
-                    <p class="text-sm text-gray-400">Có thể bán tại Thương Hội hoặc dùng (nếu là Đan Dược).</p>
-                    <div class="space-y-3">
+            // --- Trade View ---
+            } else if (viewName === 'Trade') {
+                const dailyItem = gameState.dailyItem;
+                const auctionItem = gameState.auctionItem;
+
+                let auctionHTML = '';
+                if (auctionItem) {
+                    const isHighestBidder = gameState.auctionBidder === 'Bạn';
+                    auctionHTML = `
+                        <h3 class="text-2xl text-center mt-4 text-red-400">ĐẤU GIÁ HỘI (Ngày ${gameState.currentDay} - Vòng ${gameState.currentDay - gameState.lastAuctionDay})</h3>
+                        <div class="pixel-card bg-red-800 border-red-500 p-4 mt-2">
+                            <p class="text-xl text-yellow-300 font-bold">${auctionItem.name} (Hiếm)</p>
+                            <p class="text-sm text-gray-300">${auctionItem.description}</p>
+                            <p class="text-lg mt-2">Giá hiện tại: <span class="text-green-400 font-bold">${gameState.auctionPrice.toLocaleString()} LT</span></p>
+                            <p class="text-lg mb-4">Người đặt giá cao nhất: <span class="text-orange-400">${gameState.auctionBidder}</span></p>
+                            
+                            <button class="game-button text-base p-2 w-full mb-2" 
+                                    onclick="handleBid(${JSON.stringify(auctionItem).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')}, ${gameState.auctionPrice})"
+                                    ${isHighestBidder && gameState.currentDay === gameState.lastAuctionDay ? 'disabled' : ''}>
+                                ${isHighestBidder ? 'ĐÃ LÀ GIÁ CAO NHẤT' : 'ĐẶT GIÁ (Giá tăng 10%)'}
+                            </button>
+                            
+                            <button class="game-button text-base p-2 w-full bg-green-600 border-green-300 hover:bg-green-700"
+                                    onclick="handleBuyAuctionItem(${JSON.stringify(auctionItem).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')}, ${gameState.auctionPrice})"
+                                    ${!isHighestBidder ? 'disabled' : ''}>
+                                MUA NGAY (DÀNH CHO NGƯỜI ĐẶT GIÁ CAO NHẤT)
+                            </button>
+                        </div>
+                    `;
+                } else if (gameState.currentDay % 30 === 1 && gameState.lastAuctionDay !== gameState.currentDay) {
+                     // Nếu đang ngày 1 nhưng chưa initialize (có thể do lỗi, nên hiển thị nút initialize)
+                     auctionHTML = `
+                         <h3 class="text-2xl text-center mt-4 text-red-400">ĐẤU GIÁ HỘI</h3>
+                         <p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Đấu Giá Hội hôm nay đang được chuẩn bị.</p>
+                         <button class="game-button p-2 text-base w-full mt-2" onclick="initializeAuction()">MỞ ĐẤU GIÁ</button>
+                     `;
+                } else if (gameState.currentDay % 30 === 1 && gameState.lastAuctionDay === gameState.currentDay) {
+                     auctionHTML = `
+                         <h3 class="text-2xl text-center mt-4 text-red-400">ĐẤU GIÁ HỘI</h3>
+                         <p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Đấu Giá Hội hôm nay đã kết thúc!</p>
+                     `;
+                } else {
+                     auctionHTML = `
+                         <h3 class="text-2xl text-center mt-4 text-red-400">ĐẤU GIÁ HỘI</h3>
+                         <p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Chờ đến đầu tháng (Ngày ${Math.ceil(gameState.currentDay / 30) * 30 + 1}) để tham gia Đấu Giá.</p>
+                     `;
+                }
+                
+                // Inventory Sell HTML
+                const inventoryItems = Object.keys(gameState.inventory).filter(key => gameState.inventory[key] > 0);
+                const commonItems = inventoryItems.filter(key => LOOT_PRICES[key]?.type === 'common');
+                
+                const sellLootHTML = commonItems.map(itemName => `
+                    <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
+                        <p class="text-lg">${itemName}: <span class="text-yellow-300">${gameState.inventory[itemName]}x</span></p>
+                        <div class="flex space-x-2">
+                             <button class="game-button text-xs p-1" onclick="sellLoot('${itemName}', 1)">Bán 1 (${(LOOT_PRICES[itemName]?.price || 0).toLocaleString()} LT)</button>
+                             <button class="game-button text-xs p-1 bg-red-600 border-red-300 hover:bg-red-700" onclick="sellLoot('${itemName}', ${gameState.inventory[itemName]})">Bán Hết (${(LOOT_PRICES[itemName]?.price * gameState.inventory[itemName] || 0).toLocaleString()} LT)</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                const rareItems = inventoryItems.filter(key => LOOT_PRICES[key]?.type !== 'common');
+
+                contentDiv.innerHTML = `
+                    <h2 class="text-3xl text-center text-yellow-300 mb-4">THƯƠNG HỘI</h2>
+                    
+                    <h3 class="text-2xl text-center text-green-400">CỬA HÀNG ĐẶC BIỆT HÀNG NGÀY</h3>
+                    <div class="pixel-card bg-gray-600 p-4 mt-2">
+                         <div class="flex justify-between items-center my-2 pixel-card bg-green-700 border-green-500">
+                             <div>
+                                 <p class="text-xl text-green-300 font-bold">${dailyItem.name} <span class="text-yellow-100">(${dailyItem.price.toLocaleString()} LT)</span></p>
+                                 <p class="text-sm text-gray-400">${dailyItem.description}</p>
+                             </div>
+                             <button class="game-button text-base p-2" onclick="buyItem(${JSON.stringify(dailyItem).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})">MUA</button>
+                         </div>
+                    </div>
+                    
+                    <h3 class="text-2xl text-center mt-4 text-blue-400">VẬT PHẨM THƯỜNG TRỰC</h3>
+                    <div class="pixel-card bg-gray-600 p-4 mt-2">
+                        ${TRADE_ITEMS.map(item => `
+                            <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
+                                <div>
+                                    <p>${item.name} <span class="text-yellow-300">(${item.price.toLocaleString()} LT)</span></p>
+                                    <p class="text-xs text-gray-400">${item.description}</p>
+                                </div>
+                                <button class="game-button text-xs p-1" onclick="buyItem(${JSON.stringify(item).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})">MUA</button>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    ${auctionHTML}
+                    
+                    <h3 class="text-2xl text-center mt-4 text-orange-400">BÁN VẬT PHẨM THU HOẠCH</h3>
+                    <div class="pixel-card bg-gray-600 p-4 mt-2">
                         ${commonItems.length > 0 ? `<p class="text-base text-green-300 mt-2 mb-1">--- Vật Phẩm Phổ Thông ---</p>` : ''}
                         ${sellLootHTML}
                         
@@ -922,491 +1694,146 @@
                                 </div>
                             </div>
                         `).join('')}
-                        
-                    </div>
-                ` : '<p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Túi trữ vật rỗng.</p>'}
-                </div>
-            `;
-            document.getElementById('main-content').innerHTML = inventoryHTML;
-        }
-
-        window.sellLoot = function(itemName, count) {
-            const price = LOOT_PRICES[itemName]?.price || 0;
-            if (gameState.inventory[itemName] < count) return logToConsole(`XKhông đủ ${itemName} để bán.`);
-
-            gameState.inventory[itemName] -= count;
-            gameState.spiritStone += price * count;
-
-            logToConsole(`•Bán ${count}x **${itemName}**, nhận ${(price * count).toLocaleString()} Linh Thạch.`);
-            window.saveGame(gameState);
-            renderView('Trade'); // Re-render to show updated inventory and money
-        }
-
-        window.buyItem = function(itemName) {
-            const item = TRADE_ITEMS.find(i => i.name === itemName);
-            if (!item) return logToConsole("XVật phẩm này không có sẵn.");
-            if (gameState.spiritStone < item.price) return logToConsole("XBạn không đủ Linh Thạch để mua.");
-            
-            gameState.spiritStone -= item.price;
-
-            if (item.type === 'exp') {
-                gameState.experience += item.bonus;
-                logToConsole(`•Dùng ${item.name}! Tăng ${item.bonus.toLocaleString()} Tu Vi.`);
-            } else if (item.type === 'def') {
-                gameState.baseDefense += item.bonus;
-                logToConsole(`•Dùng ${item.name}! Phòng Thủ vĩnh viễn tăng ${item.bonus}.`);
-            } else if (item.type === 'breakthrough') {
-                 gameState.inventory[item.name] = (gameState.inventory[item.name] || 0) + 1;
-                 logToConsole(`•Mua ${item.name}! Vật phẩm đã được thêm vào Túi Trữ Vật.`);
-            }
-            
-            calculateStats();
-            window.saveGame(gameState);
-            renderView('Trade');
-        }
-
-        // UPDATED renderTradeView to include Tàng Kinh Các
-        window.renderTradeView = function() {
-            // --- INVENTORY HTML ---
-            const inventoryItems = Object.keys(gameState.inventory).filter(key => gameState.inventory[key] > 0);
-            const sellLootHTML = inventoryItems.map(itemName => {
-                const price = LOOT_PRICES[itemName]?.price || 0;
-                return `
-                    <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
-                        <p class="text-sm text-gray-300">${itemName}: <span class="text-yellow-300">${gameState.inventory[itemName]}x</span></p>
-                        <button class="game-button text-xs p-1" onclick="sellLoot('${itemName}', 1)">Bán (${price.toLocaleString()} LT)</button>
                     </div>
                 `;
-            }).join('');
-
-            // --- DAILY ITEM HTML ---
-            const dailyItemHTML = gameState.dailyItem ? `
-                <div class="pixel-card bg-yellow-900 border-yellow-400 p-3 mb-4">
-                    <p class="text-xl text-yellow-300 font-bold mb-2">Đặc Biệt Hôm Nay: ${gameState.dailyItem.name} (${gameState.dailyItem.price.toLocaleString()} LT)</p>
-                    <p class="text-sm text-gray-300 mb-2">${gameState.dailyItem.description}</p>
-                    <button class="game-button w-full p-2" ${gameState.spiritStone < gameState.dailyItem.price ? 'disabled' : ''} onclick="buyDailyItem()">MUA NGAY</button>
-                </div>
-            ` : `<p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Vật phẩm đặc biệt đã bán hết.</p>`;
             
-            // --- AUCTION ITEM HTML ---
-            const auctionItemHTML = gameState.auctionItem ? `
-                <div class="pixel-card bg-red-900 border-red-500 p-3 mb-4">
-                    <p class="text-xl text-red-300 font-bold mb-2">Vật Phẩm Đấu Giá: ${gameState.auctionItem.name}</p>
-                    <p class="text-base text-yellow-100 mb-2">Giá Đấu Thầu: ${gameState.auctionItem.currentPrice.toLocaleString()} LT (Ngày ${gameState.currentDay % 30 || 30})</p>
-                    <p class="text-sm text-gray-300 mb-2">${gameState.auctionItem.description}</p>
-                    <button class="game-button w-full p-2" ${gameState.currentDay % 30 !== 0 || gameState.spiritStone < gameState.auctionItem.currentPrice ? 'disabled' : ''} onclick="buyAuctionItem()">ĐẤU THẦU (Chỉ vào Ngày 30)</button>
-                </div>
-            ` : `<p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Chưa có bảo vật đấu giá. (Chờ Ngày 30)</p>`;
+            // --- Sect View ---
+            } else if (viewName === 'Sect') {
+                const currentSect = SECTS.find(s => s.name === gameState.sectName);
+                
+                let sectDetailsHTML = '';
+                if (currentSect) {
+                     sectDetailsHTML = `
+                         <div class="pixel-card bg-green-800 border-green-500 p-4 mt-4 text-center">
+                             <h3 class="text-2xl text-green-300 font-bold">Tông Môn: ${currentSect.name}</h3>
+                             <p class="text-lg mt-2">Thân phận: **${gameState.sectRank}**</p>
+                             <p class="text-lg">Cống Hiến: **${gameState.sectContribution.toLocaleString()}**</p>
+                             <p class="text-sm text-gray-400">Lợi ích: Tăng ${(currentSect.expBonus - 1) * 100}% Tu Vi, +${currentSect.defBonus} Phòng Thủ.</p>
+                             <button class="game-button p-2 text-base w-full mt-4" onclick="handleContribute()">CỐNG HIẾN LINH THẠCH (1,000 LT = 100 Cống Hiến)</button>
+                         </div>
+                         
+                         <h3 class="text-2xl text-center text-yellow-300 mt-6 mb-4">TÀNG KINH CÁC (Học Công Pháp)</h3>
+                         <div class="grid grid-cols-2 gap-4">
+                             ${CULTIVATION_METHODS.map(method => {
+                                 const isLearned = gameState.learnedMethods.includes(method.name);
+                                 const isEquipped = gameState.cultivationMethodName === method.name;
+                                 let costDisplay = method.isSectSkill 
+                                     ? `${method.sectContribution.toLocaleString()} Cống Hiến`
+                                     : `${method.cost.toLocaleString()} LT`;
+                                 
+                                 let canAfford = method.isSectSkill 
+                                     ? gameState.sectContribution >= (method.sectContribution || 0)
+                                     : gameState.spiritStone >= (method.cost || 0);
+                                     
+                                 let buttonText = isEquipped ? 'ĐANG TRANG BỊ' : isLearned ? 'TRANG BỊ' : 'HỌC';
+                                 let isDisabled = isEquipped || (!isLearned && !canAfford) || (!isLearned && method.isSectSkill && !gameState.sectName);
+                                 
+                                 let action = isLearned ? `equipCultivationMethod(${JSON.stringify(method).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})` : `learnCultivationMethod(${JSON.stringify(method).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})`;
 
-
-            // --- TÀNG KINH CÁC (SECT LIBRARY) --- //
-            const libraryMethods = CULTIVATION_METHODS; // All regular methods are here
-            
-            let libraryHTML = `
-                <h3 class="text-2xl text-center mt-4 text-green-400 border-b border-gray-600 pb-2">TÀNG KINH CÁC (TRONG TÔNG MÔN)</h3>
-                <p class="text-sm text-gray-400 mb-2">Học Công Pháp để tăng sức mạnh cơ bản. Học xong có thể chuyển đổi công pháp.</p>
-                <div class="space-y-3">
-                    ${libraryMethods.map(method => {
-                        const isKnown = gameState.knownCultivationMethods.includes(method.name);
-                        const isActive = gameState.activeCultivationMethod === method.name;
-                        
-                        let buttonHTML;
-                        if (isActive) {
-                            buttonHTML = `<span class="text-xs p-1 bg-green-900 border-green-500 text-green-300">Đang Luyện</span>`;
-                        } else if (isKnown) {
-                            buttonHTML = `<button class="game-button text-xs p-1 bg-yellow-600 border-yellow-300 hover:bg-yellow-700" onclick="learnCultivationMethod('${method.name}')">CHUYỂN ĐỔI</button>`;
-                        } else {
-                            buttonHTML = `<button class="game-button text-xs p-1" ${method.price > gameState.spiritStone ? 'disabled' : ''} onclick="learnCultivationMethod('${method.name}')">HỌC (${method.price.toLocaleString()} LT)</button>`;
-                        }
-
-                        return `
-                            <div class="flex justify-between items-center my-2 pixel-card ${isActive ? 'bg-green-800 border-green-500' : 'bg-gray-700'}">
-                                <div>
-                                    <p>${method.name} <span class="text-yellow-300">${method.price > 0 ? `(${method.price.toLocaleString()} LT)` : '(Mặc Định)'}</span></p>
-                                    <p class="text-xs text-gray-400">${method.description}</p>
-                                </div>
-                                ${buttonHTML}
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-            
-            const tradeItemsHTML = TRADE_ITEMS.map(item => `
-                <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
-                    <div>
-                        <p>${item.name} <span class="text-yellow-300">(${item.price.toLocaleString()} LT)</span></p>
-                        <p class="text-xs text-gray-400">${item.description}</p>
-                    </div>
-                    <button class="game-button text-xs p-1" onclick="buyItem('${item.name}')">MUA</button>
-                </div>
-            `).join('');
-
-
-            let tradeHTML = `
-                <div>
-                    ${libraryHTML} <h3 class="text-2xl text-center mt-6 text-yellow-300 border-b border-gray-600 pb-2">THƯƠNG HỘI TỔNG QUAN</h3>
-                    
-                    ${dailyItemHTML}
-
-                    <h3 class="text-2xl text-center mt-4 text-cyan-400 border-b border-gray-600 pb-2">VẬT PHẨM THƯỜNG TRỰC</h3>
-                    <div class="space-y-3">
-                    ${tradeItemsHTML}
-                    </div>
-
-                    <h3 class="text-2xl text-center mt-4 text-red-400 border-b border-gray-600 pb-2">KHU VỰC ĐẤU GIÁ</h3>
-                    ${auctionItemHTML}
-                    
-                    <h3 class="text-2xl text-center mt-4 text-yellow-400 border-b border-gray-600 pb-2">TÚI TRỮ VẬT ĐỂ BÁN</h3>
-                    <div class="space-y-3">
-                    ${inventoryItems.length > 0 ? sellLootHTML : `<p class="text-center text-lg pixel-card bg-gray-700 mt-2 text-gray-400">Không có vật phẩm để bán.</p>`}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('main-content').innerHTML = tradeHTML;
-        }
-
-        // --- CULTIVATION METHOD FUNCTIONS (NEW) ---
-        window.learnCultivationMethod = function(methodName) {
-            // Find method in both regular list and auction list (only for known methods if checking state)
-            const method = CULTIVATION_METHODS.find(m => m.name === methodName) || AUCTION_ITEMS.find(m => m.name === methodName && m.type === 'cultivation_method');
-            if (!method) return logToConsole("XCông pháp này không tồn tại.");
-            
-            // 1. Check if already learned (and switch/activate)
-            if (gameState.knownCultivationMethods.includes(methodName)) {
-                // If already active, do nothing
-                if (gameState.activeCultivationMethod === methodName) {
-                    return logToConsole(`XBạn đã và đang luyện **${methodName}** rồi.`);
+                                 return `
+                                     <div class="pixel-card p-3 flex flex-col justify-between items-start ${isEquipped ? 'bg-indigo-700 border-indigo-400' : 'bg-gray-600'}">
+                                         <div>
+                                             <p class="text-lg text-blue-300 font-bold">${method.name}</p>
+                                             <p class="text-sm text-gray-400">${method.description}</p>
+                                             <p class="text-xs mt-1 ${isLearned ? 'text-green-400' : 'text-orange-400'}">${isLearned ? 'Đã Học' : `Giá: ${costDisplay}`}</p>
+                                         </div>
+                                         <button class="game-button text-xs p-1 mt-2 w-full" onclick="${action}" ${isDisabled ? 'disabled' : ''}>
+                                             ${buttonText}
+                                         </button>
+                                     </div>
+                                 `;
+                             }).join('')}
+                         </div>
+                     `;
+                } else {
+                     sectDetailsHTML = `
+                         <h3 class="text-2xl text-center text-red-400 mb-4">CHƯA GIA NHẬP TÔNG MÔN</h3>
+                         <p class="text-lg text-center text-gray-400 mb-4">Hãy chọn một Tông Môn để nhận Công Pháp và tài nguyên!</p>
+                         <div class="grid grid-cols-2 gap-4">
+                              ${SECTS.map(sect => `
+                                  <div class="pixel-card bg-gray-600 p-3">
+                                      <p class="text-xl text-blue-300 font-bold">${sect.name}</p>
+                                      <p class="text-sm text-gray-400">Yêu cầu: ${REALMS[sect.requirement].name}</p>
+                                      <p class="text-sm text-green-400">Lợi ích: Tăng ${(sect.expBonus - 1) * 100}% Tu Vi, +${sect.defBonus} Phòng Thủ.</p>
+                                      <button class="game-button text-xs p-1 w-full mt-2" onclick="handleJoinSect(${JSON.stringify(sect).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})"
+                                              ${gameState.realmIndex < sect.requirement ? 'disabled' : ''}>
+                                          GIA NHẬP
+                                      </button>
+                                  </div>
+                              `).join('')}
+                         </div>
+                     `;
                 }
-                
-                gameState.activeCultivationMethod = methodName;
-                logToConsole(`•THÀNH CÔNG: Bạn đã chuyển sang luyện **${methodName}**.`);
-            } 
-            // 2. Learning (buying) the method from Tàng Kinh Các
-            else {
-                if (gameState.spiritStone < method.price) return logToConsole(`XBạn không đủ ${method.price.toLocaleString()} Linh Thạch để học **${methodName}**.`);
-                
-                gameState.spiritStone -= method.price;
-                gameState.knownCultivationMethods.push(methodName);
-                gameState.activeCultivationMethod = methodName; // Auto activate upon learning
-                logToConsole(`§CHÚC MỪNG! Bạn đã học và bắt đầu luyện **${methodName}**!`);
-            }
 
-            calculateStats();
-            renderView('Trade'); 
-            window.saveGame(gameState);
+                contentDiv.innerHTML = `
+                    <h2 class="text-3xl text-center text-blue-300 mb-4">TÔNG MÔN</h2>
+                    ${sectDetailsHTML}
+                `;
+
+            // --- NPC View ---
+            } else if (viewName === 'NPC') {
+                 if (gameState.currentNPCCombat) {
+                      // In NPC Combat Screen
+                      const npc = gameState.currentNPCCombat;
+                      const hpPercent = (npc.currentHp / npc.maxHp) * 100;
+                      
+                      contentDiv.innerHTML = `
+                          <h2 class="text-3xl text-center text-red-400 mb-4">THÁCH ĐẤU NPC</h2>
+                          
+                          <div class="pixel-card bg-red-800 border-red-500 p-4 mb-4">
+                              <h3 class="text-2xl text-yellow-300">${npc.name} (${npc.realm})</h3>
+                              <p class="text-lg text-red-300">HP: ${npc.currentHp.toFixed(0)}/${npc.maxHp.toFixed(0)}</p>
+                              <div class="progress-bar-monster-hp mt-1">
+                                  <div class="progress-fill-monster-hp" style="width: ${hpPercent.toFixed(0)}%"></div>
+                              </div>
+                              <p class="text-lg text-red-300 mt-2">Tấn Công: ${npc.attack.toLocaleString()} | Phòng Thủ: ${npc.defense.toLocaleString()}</p>
+                          </div>
+                          
+                          <h3 class="text-2xl text-yellow-300 mt-4 mb-2 text-center">HÀNH ĐỘNG</h3>
+                          <div class="grid grid-cols-3 gap-4">
+                              ${SKILLS.map(skill => `
+                                  <button class="game-button p-2 text-base" onclick="handleActionSkill(${JSON.stringify(skill).replace(/'/g, 'QUOTE_REPLACER').replace(/\"/g, "\'").replace(/QUOTE_REPLACER/g, '\"')})"
+                                          ${gameState.currentMP < skill.mpCost ? 'disabled' : ''}>
+                                      ${skill.name} (${skill.mpCost} MP)
+                                  </button>
+                              `).join('')}
+                          </div>
+                          <button class="game-button p-2 text-base w-full mt-4 bg-red-600 border-red-300 hover:bg-red-700" onclick="switchView('TuoXian')">CHẠY TRỐN (Tọa Thiền)</button>
+                      `;
+                      
+                 } else {
+                      // NPC Interaction Screen
+                      let npcListHTML = MOCK_NPCS.map(npc => `
+                           <div class="pixel-card bg-gray-600 p-3 flex justify-between items-center my-2">
+                               <div>
+                                   <p class="text-xl text-blue-300 font-bold">${npc.name} (${npc.realm})</p>
+                                   <p class="text-sm text-gray-400">${npc.description}</p>
+                               </div>
+                               <div>
+                                   ${npc.isChallengable ? 
+                                        `<button class="game-button text-xs p-1" onclick="handleStartNPCCombat('${npc.id}')"
+                                                 ${gameState.realmIndex < REALMS.findIndex(r => r.name === npc.realm) ? 'disabled' : ''}>
+                                            THÁCH ĐẤU
+                                        </button>` 
+                                        : 
+                                        `<button class="game-button text-xs p-1" disabled>TƯƠNG TÁC</button>`
+                                   }
+                               </div>
+                           </div>
+                      `).join('');
+                      
+                      contentDiv.innerHTML = `
+                          <h2 class="text-3xl text-center text-purple-400 mb-4">GIAO TIẾP VỚI NPC</h2>
+                          <p class="text-lg text-center text-gray-400 mb-4">Giao tiếp để nhận chỉ dẫn hoặc thách đấu để nhận thưởng.</p>
+                          ${npcListHTML}
+                      `;
+                 }
+
+            }
         }
         
-        // --- NPC LOGIC (Unchanged) ---
-
-        window.renderNPCView = function() {
-            let npcHTML = `
-                <h3 class="text-2xl text-center mb-4 text-cyan-400 border-b border-gray-600 pb-2">GIAO TIẾP VỚI NPC</h3>
-                <div class="space-y-4">
-            `;
-
-            npcHTML += MOCK_NPCS.map(npc => {
-                let challengeButton = '';
-                if (npc.isChallengable) {
-                    challengeButton = `<button class="game-button text-xs p-1 bg-red-600 border-red-300 hover:bg-red-700" onclick="startNPCCombat('${npc.id}')">THÁCH ĐẤU</button>`;
-                }
-                
-                return `
-                    <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
-                        <div>
-                            <p class="text-xl text-yellow-300">${npc.name} (${npc.realm})</p>
-                            <p class="text-sm text-gray-400">${npc.description}</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button class="game-button text-xs p-1" onclick="interactNPC('${npc.id}')">TƯƠNG TÁC</button>
-                            ${challengeButton}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            npcHTML += '</div>';
-
-            if (gameState.currentNPCCombat) {
-                const npc = MOCK_NPCS.find(n => n.id === gameState.currentNPCCombat.id);
-                npcHTML += `
-                    <h3 class="text-2xl text-center mt-6 text-red-400 border-b border-gray-600 pb-2">ĐANG CHIẾN ĐẤU: ${npc.name}</h3>
-                    <div class="pixel-card bg-gray-900 p-3">
-                        <p class="text-lg text-yellow-300">HP ${npc.name}: <span id="npc-combat-hp">${gameState.currentNPCCombat.currentHP.toFixed(0)} / ${gameState.currentNPCCombat.maxHP.toFixed(0)}</span></p>
-                        <div class="progress-bar-monster-hp mt-1">
-                            <div id="npc-combat-hp-progress" class="progress-fill-monster-hp" style="width: ${((gameState.currentNPCCombat.currentHP / gameState.currentNPCCombat.maxHP) * 100).toFixed(0)}%"></div>
-                        </div>
-                        <p class="text-lg text-red-400 mt-2">HP Bạn: ${gameState.currentHP.toFixed(0)} / ${gameState.maxHP.toFixed(0)}</p>
-                        <p class="text-lg text-purple-400">MP Bạn: ${gameState.currentMP.toFixed(0)} / ${gameState.maxMP.toFixed(0)}</p>
-                        
-                        <div class="mt-4 flex space-x-2">
-                            ${SKILLS.map(skill => `
-                                <button class="game-button text-sm p-2 bg-blue-600 border-blue-300 hover:bg-blue-700" onclick="useSkillNPCCombat('${skill.name}')" ${gameState.currentMP < skill.mpCost ? 'disabled' : ''}>
-                                    ${skill.name} (-${skill.mpCost} MP)
-                                </button>
-                            `).join('')}
-                            <button class="game-button text-sm p-2 bg-gray-600 border-gray-300 hover:bg-gray-700" onclick="runFromNPCCombat()">CHẠY TRỐN</button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            document.getElementById('main-content').innerHTML = npcHTML;
-        }
-
-        function interactNPC(npcId) {
-            const npc = MOCK_NPCS.find(n => n.id === npcId);
-            
-            if (npcId === 'thanhvan') {
-                if (!gameState.npcInteractions.thanhvan_advice_atk) {
-                    gameState.baseAttack += 50;
-                    gameState.npcInteractions.thanhvan_advice_atk = true;
-                    logToConsole("§TƯƠNG TÁC: Sư Tỷ Thanh Vân hài lòng, chỉ điểm bạn 50 Tấn Công cơ bản.");
-                } else {
-                    logToConsole("!TƯƠNG TÁC: Sư Tỷ Thanh Vân mỉm cười, bảo bạn nên tự lực tu luyện.");
-                }
-            } else if (npcId === 'sugia') {
-                if (!gameState.npcInteractions.sugia_advice_def) {
-                    gameState.baseDefense += 50;
-                    gameState.npcInteractions.sugia_advice_def = true;
-                    logToConsole("§TƯƠNG TÁC: Sư Già Tiền Bối gật đầu, truyền thụ 50 Phòng Thủ cơ bản.");
-                } else {
-                    logToConsole("!TƯƠNG TÁC: Sư Già Tiền Bối chỉ vào Tàng Kinh Các, ngụ ý bạn nên đi học công pháp.");
-                }
-            } else if (npcId === 'truonglao') {
-                logToConsole("!TƯƠNG TÁC: Trưởng Lão Dược Các bảo bạn nên chú ý khu vực Đấu Giá Hội hàng tháng.");
-            } else if (npcId === 'thientai') {
-                 logToConsole("!TƯƠNG TÁC: Thiên Tài Huyền Băng nhìn bạn với vẻ kiêu ngạo, không nói gì.");
-            }
-
-            calculateStats();
-            window.saveGame(gameState);
-        }
-
-        function startNPCCombat(npcId) {
-             const npc = MOCK_NPCS.find(n => n.id === npcId);
-             if (!npc) return logToConsole("XNPC này không tồn tại.");
-             if (gameState.currentNPCCombat) return logToConsole("XĐANG CHIẾN ĐẤU: Bạn đang bị bủa vây!");
-             if (gameState.currentHP <= 0) return logToConsole("XTHƯƠNG TÍCH: Không thể chiến đấu khi đã gục ngã.");
-
-             gameState.currentNPCCombat = { 
-                id: npc.id, 
-                currentHP: npc.baseHp, 
-                maxHP: npc.baseHp,
-                currentATK: npc.baseAtk,
-                currentDEF: npc.baseDef,
-                reward: npc.reward
-             };
-
-             logToConsole(`!THÁCH ĐẤU: Bạn bắt đầu chiến đấu với **${npc.name}**!`);
-             
-             switchView('NPC');
-             if (npcCombatInterval) clearInterval(npcCombatInterval);
-             npcCombatInterval = setInterval(npcCombatTick, 1500); // Slower combat tick for NPC
-        }
-
-        function npcCombatTick() {
-            if (!gameState.currentNPCCombat || gameState.currentHP <= 0) {
-                endNPCCombat();
-                return;
-            }
-            const npc = MOCK_NPCS.find(n => n.id === gameState.currentNPCCombat.id);
-
-            // Player Attack (Base Attack)
-            const playerDmg = Math.max(1, gameState.baseAttack - gameState.currentNPCCombat.currentDEF);
-            gameState.currentNPCCombat.currentHP -= playerDmg;
-            logToConsole(`•Bạn tấn công ${npc.name}, gây ${playerDmg.toFixed(0)} sát thương.`);
-
-            if (gameState.currentNPCCombat.currentHP <= 0) {
-                handleNPCDefeated(npc);
-                endNPCCombat();
-                return;
-            }
-
-            // NPC Attack
-            const npcDmg = Math.max(1, gameState.currentNPCCombat.currentATK - gameState.baseDefense);
-            gameState.currentHP -= npcDmg;
-            logToConsole(`X${npc.name} phản công, bạn chịu ${npcDmg.toFixed(0)} sát thương.`);
-
-            if (gameState.currentHP <= 0) {
-                handleNPCPlayerDefeated(npc);
-                endNPCCombat();
-                return;
-            }
-
-            renderView('NPC'); // Re-render the NPC view to update combat stats
-            updateUI();
-        }
-
-        window.useSkillNPCCombat = function(skillName) {
-            if (!gameState.currentNPCCombat) return logToConsole("XBạn không đang chiến đấu.");
-            const skill = SKILLS.find(s => s.name === skillName);
-            if (!skill) return logToConsole("XKỹ năng này không tồn tại.");
-            if (gameState.currentMP < skill.mpCost) return logToConsole("XBạn không đủ Linh Khí để dùng kỹ năng này.");
-            
-            gameState.currentMP -= skill.mpCost;
-            
-            const npc = MOCK_NPCS.find(n => n.id === gameState.currentNPCCombat.id);
-            const playerDmg = Math.max(1, (gameState.baseAttack * skill.damageMultiplier) - gameState.currentNPCCombat.currentDEF);
-            
-            gameState.currentNPCCombat.currentHP -= playerDmg;
-            logToConsole(`§DÙNG KỸ NĂNG: Bạn dùng **${skill.name}**, gây ${playerDmg.toFixed(0)} sát thương lên ${npc.name}.`);
-
-            if (gameState.currentNPCCombat.currentHP <= 0) {
-                handleNPCDefeated(npc);
-                endNPCCombat();
-                return;
-            }
-
-            renderView('NPC');
-            updateUI();
-        }
-
-        function runFromNPCCombat() {
-            logToConsole("!HÀNH ĐỘNG: Bạn rút lui khỏi cuộc chiến.");
-            endNPCCombat();
-        }
-
-
-        function endNPCCombat() {
-            if (npcCombatInterval) clearInterval(npcCombatInterval);
-            gameState.currentNPCCombat = null;
-            renderView('NPC'); 
-            updateUI();
-            window.saveGame(gameState);
-        }
-
-        function handleNPCDefeated(npc) {
-            gameState.spiritStone += npc.reward;
-            logToConsole(`§CHIẾN THẮNG KHỦNG! Hạ gục **${npc.name}**, nhận ${npc.reward.toLocaleString()} Linh Thạch!`);
-            // NPC's reward is a one-time thing, but we can allow re-fight for now.
-        }
-
-        function handleNPCPlayerDefeated(npc) {
-            logToConsole(`XTHẤT BẠI: Bạn bị ${npc.name} đánh bại. Tốn 1 ngày để hồi phục.`);
-            gameState.currentHP = 1; // Always leave 1 HP
-            gameState.spiritStone = Math.max(0, gameState.spiritStone - Math.floor(npc.reward * 0.1)); // Small penalty
-            gameState.experience = Math.floor(gameState.experience * 0.98); // Lose 2% exp
-            gameState.currentDay++; // Lose a day
-        }
-
-        // --- GENERAL VIEW HANDLING (Unchanged) ---
-
-        window.switchView = function(viewName) {
-            gameState.currentView = viewName;
-
-            // Clear all running intervals when switching away from Tọa Thiền/Combat
-            if (tuXianInterval) clearInterval(tuXianInterval);
-            if (combatInterval) clearInterval(combatInterval);
-            if (npcCombatInterval) clearInterval(npcCombatInterval);
-
-
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`tab-${viewName}`).classList.add('active');
-
-
-            if (viewName === 'TuoXian') {
-                renderTuoXianView();
-                startTuoXianLoop();
-            } else if (viewName === 'Combat') {
-                renderCombatView();
-            } else if (viewName === 'Trade') {
-                renderView('Trade');
-            } else if (viewName === 'NPC') {
-                renderView('NPC');
-            }
-
-            window.saveGame(gameState);
-        }
-
-        window.renderView = function(viewName) {
-            if (viewName === 'TuoXian') return renderTuoXianView();
-            if (viewName === 'Combat') return renderCombatView();
-            if (viewName === 'Trade') return renderTradeView();
-            if (viewName === 'NPC') return renderNPCView();
-            if (viewName === 'Inventory') return renderInventoryView();
-        }
-
-        function renderTuoXianView() {
-            const currentRealm = REALMS[gameState.realmIndex];
-            const nextRealm = REALMS[gameState.realmIndex + 1];
-
-            let tuoXianHTML = `
-                <h3 class="text-2xl text-center mb-4 text-yellow-300 border-b border-gray-600 pb-2">KHU VỰC TỌA THIỀN</h3>
-                <div class="pixel-card bg-gray-700 p-4">
-                    <p class="text-xl text-green-400">Cảnh Giới Hiện Tại: ${currentRealm.name}</p>
-                    <p class="text-lg text-blue-400">Tu Vi Tối Đa: ${currentRealm.maxExp.toLocaleString()}</p>
-                    <p class="text-lg text-purple-400">Linh Căn: ${gameState.spiritRootName} (x${gameState.spiritRoot})</p>
-                </div>
-                
-                <div class="pixel-card bg-gray-700 p-4 mt-4">
-                    <p class="text-xl text-yellow-300 mb-2">Tiến Trình Đột Phá:</p>
-                    <p class="text-lg text-gray-400 mb-2">Tỉ lệ thành công: ${(getBreakthroughSuccessRate() * 100).toFixed(0)}%</p>
-                    <button class="game-button w-full p-2" onclick="breakthrough()" ${gameState.experience < currentRealm.maxExp ? 'disabled' : ''}>
-                        ${gameState.realmIndex >= REALMS.length - 1 ? 'ĐÃ ĐẠT CỰC HẠN' : 'ĐỘT PHÁ CẢNH GIỚI'}
-                    </button>
-                    <p class="text-xs text-red-400 mt-2 text-center">Yêu cầu: Tu Vi viên mãn và HP > 50% Max HP</p>
-                </div>
-            `;
-            document.getElementById('main-content').innerHTML = tuoXianHTML;
-        }
-
-        function renderCombatView() {
-            let combatHTML = `
-                <h3 class="text-2xl text-center mb-4 text-red-400 border-b border-gray-600 pb-2">KHU VỰC CHIẾN ĐẤU</h3>
-            `;
-
-            if (gameState.currentMonster) {
-                // Combat in progress
-                combatHTML += `
-                    <div class="pixel-card bg-gray-900 p-4">
-                        <p class="text-xl text-yellow-300 mb-2">Đang chiến đấu với: ${gameState.currentMonster.name}</p>
-                        <p class="text-lg text-red-400">HP Kẻ Địch: <span id="monster-combat-hp">${gameState.currentMonster.currentHP.toFixed(0)} / ${gameState.currentMonster.maxHP.toFixed(0)}</span></p>
-                        <div class="progress-bar-monster-hp mt-1">
-                            <div id="monster-combat-hp-progress" class="progress-fill-monster-hp" style="width: ${((gameState.currentMonster.currentHP / gameState.currentMonster.maxHP) * 100).toFixed(0)}%"></div>
-                        </div>
-                        <p class="text-lg text-gray-400 mt-2">ATK Kẻ Địch: ${gameState.currentMonster.currentATK}</p>
-                        <p class="text-lg text-red-400 mt-2">HP Bạn: ${gameState.currentHP.toFixed(0)} / ${gameState.maxHP.toFixed(0)}</p>
-                        <p class="text-lg text-purple-400">MP Bạn: ${gameState.currentMP.toFixed(0)} / ${gameState.maxMP.toFixed(0)}</p>
-                        
-                        <div class="mt-4 flex space-x-2">
-                            ${SKILLS.map(skill => `
-                                <button class="game-button text-sm p-2 bg-blue-600 border-blue-300 hover:bg-blue-700" onclick="useSkillNPCCombat('${skill.name}')" ${gameState.currentMP < skill.mpCost ? 'disabled' : ''}>
-                                    ${skill.name} (-${skill.mpCost} MP)
-                                </button>
-                            `).join('')}
-                            <button class="game-button text-sm p-2 bg-gray-600 border-gray-300 hover:bg-gray-700" onclick="endCombat()">CHẠY TRỐN</button>
-                        </div>
-                    </div>
-                `;
-                // Add MP cost for skills in future
-            } else {
-                // Hunting buttons
-                combatHTML += `
-                    <p class="text-xl text-gray-400 text-center mb-4">Chọn mục tiêu để săn bắt yêu thú:</p>
-                    <div class="space-y-4">
-                        ${MONSTERS.filter(m => m.minRealm <= gameState.realmIndex + 1).map(monster => `
-                            <div class="flex justify-between items-center my-2 pixel-card bg-gray-700">
-                                <div>
-                                    <p class="text-xl text-red-400">${monster.name} (${monster.requiredRealm})</p>
-                                    <p class="text-sm text-gray-400">ATK: ${monster.baseAtk}, HP: ${monster.baseHp}, EXP: ${monster.exp}</p>
-                                </div>
-                                <button class="game-button p-2" onclick="startCombat()">SĂN BẮT</button>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="mt-6 text-center">
-                        <button class="game-button p-2 bg-purple-600 border-purple-300 hover:bg-purple-700" onclick="renderView('Inventory')">TÚI TRỮ VẬT (KHO ĐỒ)</button>
-                    </div>
-                `;
-            }
-
-            document.getElementById('main-content').innerHTML = combatHTML;
-        }
-
+        // --- FINAL INIT ---
+        // Loaded/Initialized in startGame()
     </script>
 </body>
 </html>
