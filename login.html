@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiên Mệnh Chi Tỷ Lý Huynh - Sảnh Đăng Nhập</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Thiết lập cơ bản cho phong cách pixel */
+        .pixel-font { font-family: monospace; }
+        .game-button {
+            /* Tùy chỉnh nút theo phong cách game */
+            @apply px-4 py-2 text-white font-bold rounded shadow-lg transition duration-150 ease-in-out;
+            border: 3px solid #6ee7b7; /* green-300 */
+            background-color: #059669; /* emerald-600 */
+        }
+        .game-button:hover {
+            background-color: #047857; /* emerald-700 */
+            border-color: #a7f3d0; /* green-200 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white pixel-font flex items-center justify-center min-h-screen">
+
+    <div class="bg-gray-800 p-8 rounded-lg shadow-2xl border-4 border-emerald-500 max-w-md w-full">
+        <h1 class="text-4xl text-center mb-6 text-yellow-300">CỔNG VÀO GIỚI VỰC</h1>
+        
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="mb-4">
+                <label for="nickname" class="block text-lg mb-2 text-emerald-300">Nhập Danh Hiệu (Nickname):</label>
+                <input 
+                    type="text" 
+                    id="nickname" 
+                    name="nickname"
+                    class="w-full px-4 py-2 bg-gray-700 border-2 border-gray-600 rounded text-lg text-white focus:outline-none focus:border-emerald-400"
+                    placeholder="VD: Lý Huynh Đại Đế"
+                    required
+                    minlength="3"
+                    maxlength="20"
+                >
+            </div>
+
+            <button type="submit" class="game-button w-full text-xl mt-4">
+                KHỞI ĐỘNG TU LUYỆN
+            </button>
+        </form>
+
+        <p id="message" class="text-center mt-4 text-sm text-gray-400"></p>
+        <p class="text-xs text-center mt-2 text-red-400">Đăng nhập sẽ lưu Danh Hiệu của bạn vào Google Sheet (yêu cầu cấu hình Apps Script).</p>
+    </div>
+
+    <script>
+        // **!!! THAY THẾ URL NÀY SAU KHI CẤU HÌNH GOOGLE APPS SCRIPT Ở MỤC 2 !!!**
+        const GOOGLE_SHEET_WEB_APP_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL'; 
+
+        async function logDataToSheet(nickname) {
+            if (GOOGLE_SHEET_WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+                console.warn("Lỗi cấu hình: Vui lòng thay thế GOOGLE_SHEET_WEB_APP_URL.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('nickname', nickname);
+            formData.append('timestamp', new Date().toLocaleString('vi-VN'));
+
+            try {
+                // Gửi POST request đến Google Apps Script
+                const response = await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors' // Cần thiết để Apps Script chấp nhận yêu cầu từ trình duyệt
+                });
+                console.log("Dữ liệu đã được gửi đến Google Sheet.");
+            } catch (error) {
+                console.error("Lỗi khi gửi dữ liệu đến Google Sheet:", error);
+                document.getElementById('message').textContent = '§LỖI: Không thể kết nối với Google Sheet. Vẫn vào game...';
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const nicknameInput = document.getElementById('nickname');
+            const nickname = nicknameInput.value.trim();
+            const messageElement = document.getElementById('message');
+            
+            if (nickname) {
+                messageElement.textContent = 'Đang ghi danh vào Giới Vực...';
+                
+                // 1. Gửi dữ liệu đến Google Sheet
+                await logDataToSheet(nickname);
+
+                // 2. Lưu nickname vào Local Storage để game có thể dùng
+                localStorage.setItem('playerNickname', nickname);
+                
+                messageElement.textContent = 'Ghi danh thành công. Chuẩn bị vào game...';
+
+                // 3. Chuyển hướng đến indexkhakha.html
+                setTimeout(() => {
+                    window.location.href = 'indexkhakha.html';
+                }, 1000); // Chờ 1 giây rồi chuyển trang
+            }
+        }
+
+        // Tự động điền lại nickname nếu đã lưu
+        window.onload = function() {
+            const savedNickname = localStorage.getItem('playerNickname');
+            if (savedNickname) {
+                document.getElementById('nickname').value = savedNickname;
+                document.getElementById('message').textContent = 'Danh Hiệu cũ đã được điền. Nhấn nút để vào game.';
+            }
+        }
+    </script>
+</body>
+</html>
